@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}edgarroman.com photo site{% endblock %}
+
+{% load thumbnail %}
+{% block content %}
+<DIV id="Main-Content" > 
+ 
+<div id="PhotoView">
+      {% if photo.prev_photo %}
+      <div id="PrevPhoto"> 
+      <a href="{% url photo-view photo.prev_photo.id %}"> 
+		Previous Photo</a></div>
+      {% endif %}
+      {% if photo.next_photo %}
+      <div id="NextPhoto"> 
+      <a href="{% url photo-view photo.next_photo.id %}"> 
+		Next Photo
+      </a></div>
+      <script language="javascript"> 
+	    <!-- cache the next image
+	    ImageNext= new Image();
+	    ImageNext.src = "{% thumbnail photo.filename 1000x1000 %}"
+	    //end hiding -->
+      </script> 
+      {% endif %}
+ 
+<div id="PhotoAndTitle"> 
+<h2 id="PhotoTitle"> 
+{{ photo.title }}
+</h2> 
+<div id="PhotoImage">
+      <a href="{{ photo.filename.url }}">
+	    <img src="{% thumbnail photo.filename 1000x1000 %}" width="100%" alt="{{photo.title|escape}}">
+      </a>
+</div> 
+<table  border=0> 
+</table> 
+</div> 
+</div> <!-- PhotoView --> 
+<p> 
+<a href="{% url album-view photo.album.id %}"> 
+Back to the Album</a> 
+	<br> 
+</div> 
+
+{% endblock %}

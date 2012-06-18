@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}edgarroman.com photo site: albums{% endblock %}
+
+{% block content %}
+	<div class="clear indent-padding-1"></div>	
+
+	<!--- START SEPARATION BLOCK -->
+	<div class="separation">
+		<div class="container_16 grid16-height">
+			<div class="grid_16 center">
+				<h3 class="gray">Albums by date</h3>
+			</div> <!--- .grid_16 -->	
+		</div> <!--- .container_16 -->
+	</div> <!--- .separation -->
+	<div class="clear"></div>
+
+<div class="container_16">
+      <div class="grid_13 animate">
+         
+         {% for album_year in album_dates %}
+            <h1>
+            <a href="{% url album-list-by-year album_year.year %}">
+            Albums from year: {{ album_year.year }}
+            </a>
+            </h1>
+         {% endfor %}
+         
+      </div> <!--- .grid_11 -->
+
+{% endblock %}
+
+

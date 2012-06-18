@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}edgarroman.com photo site{% endblock %}
+{% block currenthomepage %}class="current"{% endblock %}
+
+{% block content %}
+	<div class="clear"></div>
+
+<div class="container_16">
+      <div class="grid_13 ">
+      <h1>Login Error</h1>
+
+      {% if messages %}
+	{% for msg in messages %}
+	    <p class="error">{{ msg.message }} ({{ msg.extra_tags }})</p>
+	{% endfor %}
+      {% endif %}
+      {% if error_msg %}
+	<p>Details:</p>
+	<p class="error">{{ error_msg }}</p>
+      {% endif %}      
+      
+      Session variable:
+      <pre>
+	    {{ request.session.social_errors }}
+      </pre>
+      </div> <!--- .grid_13 -->
+
+{% endblock %}

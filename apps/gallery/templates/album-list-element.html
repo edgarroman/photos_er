@@ -1,0 +1,19 @@
+{% load thumbnail %}
+
+     <!--- Single Post -->
+     <div class="single_post">
+	  <h2><a href="{% url album-view album.id %}">{{ album.title }}</a></h2>
+	       <div class="post_info">
+		    <span class="date">{{ album.date }}</span>
+		    <span class="folder">{{ album.photo_set.count }} pictures</span> 
+	       </div> <!--- #post_info -->		
+
+	       <div class="bg-image-one">
+		    {% for photo in album.photo_set.all|dictsort:"order"|slice:":3" %}
+			 <img src="{% thumbnail photo.filename 200x200 crop %}" alt="{{photo.title|escape}}">
+		    {% endfor %}
+	       </div> <!--- #bg-image-one -->
+	       <p>{{ album.description }}</p>
+	       <div class="grid_3 alpha"><a href="{% url album-view album.id %}" class="button button-gray">Read more &rarr;</a></div>	
+	       <hr />
+     </div> <!--- #single_post -->
