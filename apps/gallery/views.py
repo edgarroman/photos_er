@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
-from gallery.models import *
+from apps.gallery.models import *
 from django.template import Context, RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Count
@@ -171,11 +171,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson
 import random
 from shutil import copyfile
-from PIL import Image, ExifTags
+#from PIL import Image, ExifTags
+try:
+    import Image
+    import ExifTags
+except ImportError: 
+    from PIL import Image, ExifTags
 from datetime import datetime
 from os import unlink
 from django.core.files import File  
-from easy_thumbnails.files import get_thumbnailer
+#from easy_thumbnails.files import get_thumbnailer
 
 @csrf_exempt
 def accept_uploaded_photo(request, album_id):
@@ -333,7 +338,9 @@ def accept_uploaded_photo(request, album_id):
         file_delete_url = 'multi_delete/'
 
         thumbnail_options = dict(size=(200, 200), crop=True)
-        thumb_url = get_thumbnailer(photo.filename).get_thumbnail(thumbnail_options).url
+        #thumb_url = get_thumbnailer(photo.filename).get_thumbnail(thumbnail_options).url
+        #TODO fix
+        thumb_url = ''
 
         #generating json response array
         result = []
