@@ -5,24 +5,21 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Count
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import redirect
+from apps.gallery.forms import AlbumForm
 
 import logging
 logfile = settings.TEMP_DIRECTORY + 'applog.log'
 logging.basicConfig(filename=logfile,level=logging.INFO)
 log = logging
 
+ALBUM_PAGE_SIZE = 10
+
 def main_page(request):
 
-#    albums_qs = Album.objects.order_by('-date').filter(published='1')[:10]
-#    albums = []
-#    for album in albums_qs:
-#        a = album
-#        if album.photo_set.count():
-#            first_photo = Photo.objects.order_by('order').filter(album=album.id)[0]
-#            a['thumbnail_url'] = first_photo.get_thumbnail_url
-#        albums.append(a)
-    albums = Album.objects.order_by('-date').filter(published='1')[:10]
-
+    albums = Album.objects.order_by('-date').filter(published='1')[:ALBUM_PAGE_SIZE]
+    
     context = Context()
     context['albums'] = albums
     request_context = RequestContext(request)
@@ -30,29 +27,22 @@ def main_page(request):
                               context,
                               request_context)
     
-def album_list(request, page_id='0'):
+def album_list(request, page_id='1'):
 
-    page_size = 10
-    page_id = int(page_id)
-    start = page_id * page_size
-    end = start + page_size
-
-    albums = Album.objects.order_by('-date').filter(published='1')[start:end]
-    
-    if len(albums) <= 0:
-        next_page_id = None
-    else:
-        next_page_id = page_id + 1
-    
-    if page_id == 0:
-        prev_page_id = None
-    else:
-        prev_page_id = page_id - 1
+    all_albums = Album.objects.all()
+    paginator = Paginator(all_albums, ALBUM_PAGE_SIZE)
+    try:
+        albums = paginator.page(page_id)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        albums = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        albums = paginator.page(paginator.num_pages)
 
     context = Context()
     context['albums'] = albums
-    context['next_page_id'] = next_page_id
-    context['prev_page_id'] = prev_page_id
+    context['last_page'] = paginator.num_pages
     request_context = RequestContext(request)
     return render_to_response('album-list.html',
                               context,
@@ -112,6 +102,24 @@ def mobile_album_view(request, album_id=None):
                               context,
                               request_context)
 
+def album_new(request):
+    
+    if request.method == 'POST':
+        form = AlbumForm(request.POST)
+        if form.is_valid():
+            
+            album = form.save()
+            return redirect(album.get_url())
+    else:
+        form = AlbumForm()
+        
+    context = Context()
+    context['form'] = form
+    request_context = RequestContext(request)
+    return render_to_response('album-new.html',
+                              context,
+                              request_context)
+
 def photo_view(request, photo_id=None):
     
     if not photo_id:
@@ -148,7 +156,6 @@ def login(request):
                               request_context)
 
 from django.contrib.auth import logout as auth_logout
-from django.shortcuts import redirect
 
 def logout(request):
     auth_logout(request)

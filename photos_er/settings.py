@@ -124,6 +124,10 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'apps.gallery',
     'social_auth',
+    # allows nice formatting
+    'django.contrib.humanize',
+    # schema migration
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging

@@ -6,7 +6,7 @@ from apps.gallery.models import Notification
 
 
 admin.site.register(User)
-#admin.site.register(Album)
+admin.site.register(Album)
 admin.site.register(Photo)
 admin.site.register(Notification)
 

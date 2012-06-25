@@ -8,6 +8,9 @@ urlpatterns = patterns('apps.gallery.views',
     url(r'^album-list-by-year/$', 'album_list_by_year_years', name='album-list-by-year-years'),
     url(r'^album-list-by-year/(?P<year>\d+)/$', 'album_list_by_year', name='album-list-by-year'),    
 
+    url(r'^album/new/$', 'album_new', name='album-new'),    
+
+
     url(r'^malbum/(?P<album_id>\d+)/$', 'mobile_album_view', name='mobile-album-view'),
     
     url(r'^uploadphotointerface/(?P<album_id>\d+)/$', 'upload_photo_interface', name='uploadphotointerface'),

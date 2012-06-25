@@ -36,9 +36,9 @@ class Album(models.Model):
     title = models.CharField(max_length=765, db_column='AlbumName') # Field name made lowercase.
     description = models.TextField(db_column='AlbumDescription', blank=True) # Field name made lowercase.
     keywords = models.CharField(max_length=765, db_column='Keywords', blank=True) # Field name made lowercase.
-    date = models.DateTimeField(db_column='AlbumDate', blank=False, default=datetime.now()) # Field name made lowercase.
-    datecreated = models.DateTimeField(db_column='DateCreated', default=datetime.now()) # Field name made lowercase.
-    datelastmodified = models.DateTimeField(db_column='DateLastModified', default=datetime.now()) # Field name made lowercase.
+    date = models.DateTimeField(db_column='AlbumDate', blank=False, default=datetime.now) # Field name made lowercase.
+    datecreated = models.DateTimeField(auto_now=True, auto_now_add=True,db_column='DateCreated') # Field name made lowercase.
+    datelastmodified = models.DateTimeField(auto_now=True, auto_now_add=True,db_column='DateLastModified') # Field name made lowercase.
     published = models.IntegerField(db_column='Published', default=1) # Field name made lowercase.
     passwordprotected = models.IntegerField(db_column='PasswordProtected', default=0) # Field name made lowercase.
     class Meta:

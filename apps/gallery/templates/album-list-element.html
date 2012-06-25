@@ -1,19 +1,23 @@
-{% load thumbnail %}
+{% load humanize %}
 
-     <!--- Single Post -->
-     <div class="single_post">
-	  <h2><a href="{% url album-view album.id %}">{{ album.title }}</a></h2>
-	       <div class="post_info">
-		    <span class="date">{{ album.date }}</span>
-		    <span class="folder">{{ album.photo_set.count }} pictures</span> 
-	       </div> <!--- #post_info -->		
-
-	       <div class="bg-image-one">
-		    {% for photo in album.photo_set.all|dictsort:"order"|slice:":3" %}
-			 <img src="{% thumbnail photo.filename 200x200 crop %}" alt="{{photo.title|escape}}">
-		    {% endfor %}
-	       </div> <!--- #bg-image-one -->
-	       <p>{{ album.description }}</p>
-	       <div class="grid_3 alpha"><a href="{% url album-view album.id %}" class="button button-gray">Read more &rarr;</a></div>	
-	       <hr />
-     </div> <!--- #single_post -->
+		<article class="entry clearfix">
+			<div class="">
+				<a href="{% url album-view album.id %}">
+					<h1 class="title">{{album.title}}</h1>
+				</a>
+				<p>{{album.description}}</p>
+				
+			</div><!-- end .entry-body -->
+			<a href="{% url album-view album.id %}" title="{{album.title}}">
+				<img src="http://photos.edgarroman.com/images/thumbs/12708.jpg.200x200_q85_crop.jpg" alt="" class="">
+				<img src="http://photos.edgarroman.com/images/thumbs/12709.jpg.200x200_q85_crop.jpg" alt="" class="">
+				<img src="http://photos.edgarroman.com/images/thumbs/12710.jpg.200x200_q85_crop.jpg" alt="" class="">
+			</a>
+			<div class="entry-meta">
+				<ul>
+					<li><span class="title">Date:</span> <a href="{% url album-view album.id %}">{{album.date|naturalday}}</a></li>
+					<li><span class="title">Photos:</span> <a href="{% url album-view album.id %}">{{album.photo_set.count}}</a></li>
+				</ul>
+			</div><!-- end .entry-meta -->
+			
+		</article><!-- end .entry -->

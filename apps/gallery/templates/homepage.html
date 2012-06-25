@@ -8,8 +8,11 @@
 		<h1 class="page-title">Newest Albums</h1>
 	</header><!-- end .page-header -->
 
+	<section id="main">
 	{% for album in albums %}
-	   blah 
+		{% include "album-list-element.html" %} 
 	{% endfor %}
+	</section><!-- end #main -->
+
 
 {% endblock %}

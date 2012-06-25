@@ -55,8 +55,13 @@
 			<li class="current">
 				<a href="{% url home %}" data-description="See the newest Albums">Home</a>
 			</li>
-			<li><a href="{% url album-list '0' %}" target="_self" >Albums</a></li>
+			<li><a href="{% url album-list '1' %}" target="_self" >Albums</a></li>
 			<li><a href="{% url album-list-by-year-years %}" target="_self" >Albums by Year</a></li>
+
+			{% if user.is_authenticated and user.is_staff %}
+			<li><a href="{% url album-new %}">Add New Album</a></li>
+			{% endif %}
+			
 		</ul>
 	</nav><!-- end #main-nav -->
 </header><!-- end #header -->
