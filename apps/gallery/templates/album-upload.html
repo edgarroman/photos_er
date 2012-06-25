@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}{{album.title}} - Upload Photos{% endblock %}
 
@@ -14,5 +14,48 @@
 	</header><!-- end .page-header -->
 
 
-	
+
+
+
+<!-- Load Queue widget CSS and jQuery -->
+<style type="text/css">@import url({{ STATIC_URL }}plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<!-- Load plupload and all it's runtimes and finally the jQuery queue widget -->
+<script type="text/javascript" src="{{ STATIC_URL }}plupload/plupload.full.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+
+<script type="text/javascript">
+
+// Have to alias plupload's version of jquery so it works and does not conflict with the template's version
+var jq151 = jQuery.noConflict();
+
+// Convert divs to queue widgets when the DOM is ready
+jq151(function() {
+
+
+    // Setup html5 version
+    jq151("#html5_uploader").pluploadQueue({
+        // General settings
+        runtimes : 'html5',
+        url : 'upload.php',
+        max_file_size : '10mb',
+        chunk_size : '1mb',
+        unique_names : true,
+        // Resize images on clientside if we can
+        resize : {width : 320, height : 240, quality : 90},
+        // Specify what files to browse for
+        filters : [
+            {title : "Image files", extensions : "jpg,gif,png"},
+            {title : "Zip files", extensions : "zip"}
+        ]
+    });
+});
+</script>
+
+<h4>HTML 5 runtime</h4>
+<div id="html5_uploader" style="height: 330px;">You browser doesn't support native upload. Try Firefox 3 or Safari 4.</div>
+
+
+
+
 {% endblock %}
