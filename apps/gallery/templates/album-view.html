@@ -1,39 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}edgarroman.com photo site{% endblock %}
+{% block title %}{{album.title}}{% endblock %}
 
 
 {% block additional_header_scripts %}
-<!--- COLORBOX FOR GALLERY -->
-<link href="{{ MEDIA_URL }}/ocean/css/colorbox.css" rel="stylesheet" type="text/css" media="screen" />
-<script type="text/javascript" src="{{ MEDIA_URL }}/ocean/js/jquery.colorbox.js"></script>
-<script type="text/javascript">
-		$(document).ready(function(){
-			$("a[rel='ocean_gallery']").colorbox();
-		});
-</script>
-<!---END COLORBOX FOR GALLERY -->
+
 {%endblock%}
 
 
 {% block content %}
-<!--- START SEPARATION BLOCK -->
-<div class="separation">
-        <div class="container_16 grid16-height">
-                <div class="grid_16 center"><h3 class="gray">{{ album.title }}</h3></div>	
-        </div> <!--- .container_16 -->
-</div> <!--- .separation -->
-<div class="clear"></div>
-<h2>{{ album.description }}</h2>
-<div class="container_16 animate">
+		
+	<header class="page-header">
+		<h1 class="page-title">{{album.title}}</h1>
+	</header><!-- end .page-header -->
+
+    {% if user.is_authenticated and user.is_staff %}
+		<div class="widget">
+		    <a class="button" href="{% url album-upload album.id %}">Upload Photos</a>
+		    <a class="button" href="#">Reorder Photos</a>
+		</div><!-- end .widget -->        
+		<p></p>	
+    {% endif %}
+    <section id="portfolio-items" class="clearfix">
     {% for photo in album.photo_set.all %}
-      <div class="bg-image-three {% if forloop.counter|divisibleby:"3" %}last{%endif%}" >
-          {% include "photo-list-element.html" %} 
-      </div> <!--- .bg-image-three -->
-    
-      {% if forloop.counter|divisibleby:"3" %}
-          <div class="clear"></div>
-      {% endif %}
+		{% include "photo-list-element.html" %} 
     {% endfor %}
-</div>
+	</section><!-- end #portfolio-items -->
+
+
+	
 {% endblock %}

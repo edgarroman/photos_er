@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
 from apps.gallery.forms import AlbumForm
+from django.contrib.auth.decorators import user_passes_test
 
 import logging
 logfile = settings.TEMP_DIRECTORY + 'applog.log'
@@ -384,4 +385,16 @@ def test(request):
     
     return HttpResponse ('Test working!')
     
- 
+@user_passes_test(lambda u: u.is_staff)
+def album_upload(request,album_id):
+        
+    album = Album.objects.get(id=album_id)
+    if not album:
+        return HttpResponseNotFound('No such album')
+
+    context = Context()
+    context['album'] = album
+    request_context = RequestContext(request)
+    return render_to_response('album-upload.html',
+                              context,
+                              request_context)

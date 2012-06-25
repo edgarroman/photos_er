@@ -9,7 +9,11 @@
 	</header><!-- end .page-header -->
 
 	<section id="main">
-	{{ form.as_p }}
+		<form method="POST">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" />
+		</form>
 	</section><!-- end #main -->
 	
 {% endblock %}
