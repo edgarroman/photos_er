@@ -1,0 +1,11 @@
+
+<!-- This is an unstyled page that merely accepts an uploaded file -->
+<form enctype="multipart/form-data" action="{% url photo-upload album_id %}" method="post">
+{% csrf_token %}
+
+<div id="uploader">
+ {{form.file.errors}}{{form.file}}
+ <input type="submit" value="Upload" />
+</div>
+
+</form>

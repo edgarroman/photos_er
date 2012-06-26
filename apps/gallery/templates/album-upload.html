@@ -13,10 +13,6 @@
 		<h1 class="page-title">{{album.title}} - Upload Photos</h1>
 	</header><!-- end .page-header -->
 
-
-
-
-
 <!-- Load Queue widget CSS and jQuery -->
 <style type="text/css">@import url({{ STATIC_URL }}plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
@@ -37,17 +33,19 @@ jq151(function() {
     jq151("#html5_uploader").pluploadQueue({
         // General settings
         runtimes : 'html5',
-        url : 'upload.php',
+        url : '{% url photo-upload album.id %}',
         max_file_size : '10mb',
         chunk_size : '1mb',
         unique_names : true,
+		multiple_queues : true,
         // Resize images on clientside if we can
-        resize : {width : 320, height : 240, quality : 90},
+        //resize : {width : 320, height : 240, quality : 90},
         // Specify what files to browse for
         filters : [
             {title : "Image files", extensions : "jpg,gif,png"},
-            {title : "Zip files", extensions : "zip"}
-        ]
+            //{title : "Zip files", extensions : "zip"}
+        ],
+		headers : {'X-Requested-With' : 'XMLHttpRequest', 'X-CSRFToken' : '{{csrf_token}}'},
     });
 });
 </script>
