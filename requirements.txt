@@ -7,3 +7,4 @@ pil==1.1.7
 python-dateutil==2.1
 python-openid==2.2.5
 six==1.1.0
+sorl-thumbnail==11.12

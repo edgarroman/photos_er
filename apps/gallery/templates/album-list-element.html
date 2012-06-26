@@ -1,4 +1,4 @@
-{% load humanize %}
+{% load humanize thumbnail %}
 
 		<article class="entry clearfix">
 			<div class="">
@@ -9,9 +9,11 @@
 				
 			</div><!-- end .entry-body -->
 			<a href="{% url album-view album.id %}" title="{{album.title}}">
-				<img src="http://photos.edgarroman.com/images/thumbs/12708.jpg.200x200_q85_crop.jpg" alt="" class="">
-				<img src="http://photos.edgarroman.com/images/thumbs/12709.jpg.200x200_q85_crop.jpg" alt="" class="">
-				<img src="http://photos.edgarroman.com/images/thumbs/12710.jpg.200x200_q85_crop.jpg" alt="" class="">
+				{% for photo in album.photo_set.all|dictsort:"order"|slice:":3" %}
+ 				    {% thumbnail photo.filename "200x200" crop="center" as im %}
+				         <img src="{{ MEDIA_URL}}/{{ im.url }}" alt="{{photo.title|escape}}">
+					{% endthumbnail %}
+				{% endfor %}
 			</a>
 			<div class="entry-meta">
 				<ul>

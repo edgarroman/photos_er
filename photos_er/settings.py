@@ -128,6 +128,8 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     # schema migration
     'south',
+    # thumbnail generation
+    'sorl.thumbnail',
 )
 
 # A sample logging configuration. The only tangible logging
