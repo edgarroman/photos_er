@@ -52,14 +52,16 @@
 	<nav id="main-nav">
 		
 		<ul>
-			<li class="current">
+			<li {% block menu-highlight-home %}{% endblock %}>
 				<a href="{% url home %}" data-description="See the newest Albums">Home</a>
 			</li>
-			<li><a href="{% url album-list '1' %}" target="_self" >Albums</a></li>
-			<li><a href="{% url album-list-by-year-years %}" target="_self" >Albums by Year</a></li>
-
+			<li {% block menu-highlight-albums %}{% endblock %}>
+				<a href="{% url album-list '1' %}" target="_self" >Albums</a></li>
+			<li {% block menu-highlight-by-year %}{% endblock %}>
+				<a href="{% url album-list-by-year-years %}" target="_self" >Albums by Year</a></li>
 			{% if user.is_authenticated and user.is_staff %}
-			<li><a href="{% url album-new %}">Add New Album</a></li>
+			<li {% block menu-highlight-new %}{% endblock %}>
+				<a href="{% url album-new %}">Add New Album</a></li>
 			{% endif %}
 			
 		</ul>

@@ -177,7 +177,7 @@ def main_page(request):
     
 def album_list(request, page_id='1'):
 
-    all_albums = Album.objects.all()
+    all_albums = Album.objects.all().order_by('-date').filter(published='1')
     paginator = Paginator(all_albums, ALBUM_PAGE_SIZE)
     try:
         albums = paginator.page(page_id)
