@@ -11,7 +11,7 @@
 			<a href="{% url album-view album.id %}" title="{{album.title}}">
 				{% for photo in album.photo_set.all|dictsort:"order"|slice:":3" %}
  				    {% thumbnail photo.filename "200x200" crop="center" as im %}
-				         <img src="{{ MEDIA_URL}}/{{ im.url }}" alt="{{photo.title|escape}}">
+				         <img src="{{ MEDIA_URL}}{{ im.url }}" alt="{{photo.title|escape}}">
 					{% endthumbnail %}
 				{% endfor %}
 			</a>

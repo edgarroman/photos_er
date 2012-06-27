@@ -1,8 +1,8 @@
 {% load thumbnail %}
 		<article class="one-third" data-categories="{{ photo.keywords }}">
-			<a href="{{ MEDIA_URL}}/{{ photo.filename.url }}" class="single-image" title="{{ photo.title|escape}}">
+			<a href="{{ MEDIA_URL}}{{ photo.filename.url }}" class="single-image" title="{{ photo.title|escape}}">
                 {% thumbnail photo.filename "300x190" as im %}
-				<img src="{{ MEDIA_URL}}/{{ im.url }}" alt="{{photo.title|escape}}" >
+				<img src="{{ MEDIA_URL}}{{ im.url }}" alt="{{photo.title|escape}}" >
                 {% endthumbnail %}
 			</a>
             <h5 class="title">{{photo.title|escape}}</h5>
