@@ -10,7 +10,8 @@
 {% block content %}
 		
 	<header class="page-header">
-		<h1 class="page-title">{{album.title}} - Upload Photos</h1>
+		<h1 class="page-title">
+			<a href="{% url album-view album.id %}">{{album.title}}</a> - Upload Photos</h1>
 	</header><!-- end .page-header -->
 
 <!-- Load Queue widget CSS and jQuery -->
@@ -50,8 +51,10 @@ jq151(function() {
 });
 </script>
 
-<h4>HTML 5 runtime</h4>
+<h4>Drag and drop images into the box below.  Or click on 'Add Files' then 'Upload'</h4>
 <div id="html5_uploader" style="height: 330px;">You browser doesn't support native upload. Try Firefox 3 or Safari 4.</div>
+
+<a href="{% url album-view album.id %}">Back to the Album</a>
 
 
 
