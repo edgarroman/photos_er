@@ -10,7 +10,7 @@
 			</div><!-- end .entry-body -->
 			<a href="{% url album-view album.id %}" title="{{album.title}}">
 				{% for photo in album.photo_set.all|dictsort:"order"|slice:":3" %}
-				         <img src="{{ photo.filename.url|its:"edgar|.resize.200x200.jpg" }}" alt="{{photo.title|escape}}">
+				         <img src="{{ photo.filename.url|its:"edgarphoto|.resize.200x200.jpg" }}" alt="{{photo.title|escape}}">
 				{% endfor %}
 			</a>
 			<div class="entry-meta">

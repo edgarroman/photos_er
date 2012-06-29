@@ -24,10 +24,9 @@ def its(value,arg):
     if not sep:
         return value
 
-    # now strip off 'http://' from the value and prepend the its string
-    url_stub = value.lstrip('http://photos.edgarroman.com/media/')
+    url_stub = value.replace('/media/','')
 
-    final_url = 'http://image.pbs.org/' + namespace + '/' + url_stub + transform
+    final_url = 'http://image.pbs.org/%s/%s%s' % (namespace, url_stub, transform)
 
     return final_url
 
