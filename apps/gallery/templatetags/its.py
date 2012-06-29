@@ -25,7 +25,7 @@ def its(value,arg):
         return value
 
     # now strip off 'http://' from the value and prepend the its string
-    url_stub = value.lstrip('http://')
+    url_stub = value.lstrip('http://photos.edgarroman.com/media/')
 
     final_url = 'http://image.pbs.org/' + namespace + '/' + url_stub + transform
 
