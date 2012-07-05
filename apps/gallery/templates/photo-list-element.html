@@ -1,5 +1,5 @@
 {% load thumbnail %}
-		<article class="one-third" data-categories="{{ photo.keywords }}">
+<li class="one-third {% cycle 'first' 'second' 'last' %}">
             {% thumbnail photo.filename "1024x1024" as lg_im %}
 			<a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
             {% endthumbnail %}
@@ -9,5 +9,4 @@
 			</a>
             <h5 class="title">{{photo.title|escape}}</h5>
             <span class="categories">{{photo.description}}</span>
-			</a>
-		</article><!-- end .one-third (Altered) -->
+</li>
