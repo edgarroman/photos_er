@@ -125,7 +125,7 @@ def _process_uploaded_file(f, album_id):
     album = Album.objects.get(id=album_id)
     photo = Photo()
     photo.album = album
-    photo.title = 'New Photo'
+    photo.title = ''
     
     log.info('[%s] Determining photo order' % logid)
     #------------------
