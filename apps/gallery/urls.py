@@ -8,6 +8,7 @@ urlpatterns = patterns('apps.gallery.views',
 
     # Album endpoints
     url(r'^album/(?P<album_id>\d+)/sort/$', 'album_sort', name='album-sort'),
+    url(r'^album/(?P<album_id>\d+)/sort/ajax$', 'album_sort_ajax', name='album-sort-ajax'),
     url(r'^album/(?P<album_id>\d+)/edit/$', 'album_edit', name='album-edit'),
     url(r'^album/new/$', 'album_new', name='album-new'),    
     

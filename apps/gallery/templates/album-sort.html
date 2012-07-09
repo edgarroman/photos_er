@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}{{album.title}}{% endblock %}
+
+
+{% block additional_footer_scripts %}
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
+    <script>
+        
+	$(function() {
+		$( "#sortgallery" ).sortable({
+            update: function(event,ui) {
+                var serial = $("#sortgallery").sortable('serialize');
+                $.ajax({
+                    url: "{% url album-sort-ajax album.id %}",
+                    type: "post",
+                    data: serial,
+                    error: function()
+                    {
+                        alert("theres an error with AJAX");
+                    }
+                });
+
+            }
+        });
+        $( "#sortgallery" ).disableSelection();
+	});
+    </script>
+    
+    
+{%endblock%}
+
+
+{% block content %}
+		
+	<header class="page-header">
+		<h1 class="page-title">
+			<a href="{% url album-view album.id %}">{{album.title}}</a> - Sort Photos</h1>
+	</header><!-- end .page-header -->
+
+    <a class="button" href="{% url album-view album.id %}">Done Sorting Photos</a>
+
+    <h4>Drag and drop images into correct order.  Changes are saved immediately</h4>
+
+    <ul id="sortgallery">
+        {% for photo in album.photo_set.all %}
+            <div id="photo_{{photo.id}}" class="one-third {% cycle '' '' 'last' %}">
+            <li>
+                {% thumbnail photo.filename "1024x1024" as lg_im %}
+                <a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
+                {% endthumbnail %}
+                    {% thumbnail photo.filename "300x190" as im %}
+                    <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
+                    {% endthumbnail %}
+                </a>
+                <h5 class="title">{{photo.title|escape}}</h5>
+                <span class="categories">{{photo.description}}</span>
+            </li>
+            </div>
+        {% endfor %}
+    </ul>
+
+	
+{% endblock %}

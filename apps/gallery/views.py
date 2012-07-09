@@ -236,22 +236,6 @@ def album_view(request, album_id=None):
                               context,
                               request_context)
 
-def album_view(request, album_id=None):
-
-    if not album_id:
-        return HttpResponseNotFound('No such album')
-        
-    album = Album.objects.get(id=album_id)
-    photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
-
-    context = Context()
-    context['photos'] = photos
-    context['album'] = album
-    request_context = RequestContext(request)
-    return render_to_response('album-view.html',
-                              context,
-                              request_context)
-
 @user_passes_test(lambda u: u.is_staff)
 def album_sort(request, album_id=None):
 
@@ -268,6 +252,23 @@ def album_sort(request, album_id=None):
     return render_to_response('album-sort.html',
                               context,
                               request_context)
+
+@csrf_exempt
+@user_passes_test(lambda u: u.is_staff)
+def album_sort_ajax(request, album_id=None):
+
+    if not album_id:
+        return HttpResponseNotFound('No such album')
+        
+    album = Album.objects.get(id=album_id)
+
+    for index, photo_id in enumerate(request.POST.getlist('photo[]')):
+        photo = get_object_or_404(Photo, id=int(str(photo_id)))
+  
+        photo.order = index
+        photo.save()
+
+    return HttpResponse("Ok")
 
 @user_passes_test(lambda u: u.is_staff)
 def album_edit(request, album_id=None):

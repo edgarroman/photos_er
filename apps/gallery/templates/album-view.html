@@ -32,7 +32,7 @@
     {% if user.is_authenticated and user.is_staff %}
 		<div class="widget">
 		    <a class="button" href="{% url album-upload album.id %}">Upload Photos</a>
-		    <a class="button" href="{% url album-sort album.id %}">Reorder Photos</a>
+		    <a class="button" href="{% url album-sort album.id %}">Sort Photos</a>
 		</div><!-- end .widget -->        
 		<p></p>	
     {% endif %}
