@@ -211,7 +211,7 @@ def album_list_by_year(request, year=None):
 
 def album_list_by_year_years(request):
 
-    album_dates = Album.objects.dates('date','year')
+    album_dates = Album.objects.dates('date','year',order='DESC')
 
     context = Context()
     context['album_dates'] = album_dates
