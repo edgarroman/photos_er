@@ -294,16 +294,18 @@ def album_edit_ajax(request, album_id=None):
 
     if not album_id:
         return HttpResponseNotFound('No such album')
+    album = get_object_or_404(Album, id=album_id)
 
     form = AlbumEditForm(request.POST)
     if form.is_valid():
         new_val = form.cleaned_data['value']
         action,photo_id = form.cleaned_data['id'].split('|',1)
 
-        print action
-        print photo_id
-        print new_val
         photo = get_object_or_404(Photo, id=int(str(photo_id)))
+        # verify photo exists in current album
+        if photo.album != album:
+            return HttpResponseBadRequest('Wrong album')
+
         if action == 'title':
             photo.title = new_val
             photo.save()
