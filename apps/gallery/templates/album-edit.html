@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}{{album.title}}{% endblock %}
+
+{% block additional_footer_scripts %}
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}jquery.jeditable.js"></script>
+    <script>
+
+    $(".click").editable("{% url album-edit-ajax album.id %}", {
+        indicator : "Saving...",
+        tooltip   : "Click to edit...",
+        style  : "inherit",
+        onblur : "submit",
+        placeholder : "<em>Untitled - Click to add</em>"
+    });
+
+    </script>
+
+{%endblock%}
+
+
+{% block content %}
+
+    <header class="page-header">
+        <h1 class="page-title">
+            <a href="{% url album-view album.id %}">{{album.title}}</a> - Edit Album</h1>
+    </header><!-- end .page-header -->
+
+    <a class="button" href="{% url album-view album.id %}">Done Editing Album</a>
+
+    <h4>Click on a title or description below to change it.  Changes are saved immediately</h4>
+
+    <ul>
+        {% for photo in album.photo_set.all %}
+            <div id="photo_{{photo.id}}" class="one-third {% cycle '' '' 'last' %}">
+            <li class="single-image">
+                {% thumbnail photo.filename "300x190" as im %}
+                <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
+                {% endthumbnail %}
+                <h5 class="title click button no-bg" id="title|{{photo.id}}">{{photo.title|escape}}</h5>
+                <span class="categories">{{photo.description}}</span>
+            </li>
+            </div>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}

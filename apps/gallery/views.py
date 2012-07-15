@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
-from apps.gallery.forms import AlbumForm, UploadPhotoForm
+from apps.gallery.forms import AlbumForm, UploadPhotoForm, AlbumEditForm
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
@@ -29,11 +29,11 @@ from shutil import copyfile
 try:
     import Image
     import ExifTags
-except ImportError: 
+except ImportError:
     from PIL import Image, ExifTags
 from datetime import datetime
 from os import unlink
-from django.core.files import File  
+from django.core.files import File
 #from easy_thumbnails.files import get_thumbnailer
 
 def _process_uploaded_file(f, album_id):
@@ -126,7 +126,7 @@ def _process_uploaded_file(f, album_id):
     photo = Photo()
     photo.album = album
     photo.title = ''
-    
+
     log.info('[%s] Determining photo order' % logid)
     #------------------
     # Determine where in the photo order this picture needs to be
@@ -141,7 +141,7 @@ def _process_uploaded_file(f, album_id):
             photo.order = prev_photo.order
         else:
             # First in album
-            photo.order = 0               
+            photo.order = 0
     else:
         # Last in album
         photo.order = album.photo_set.count() + 1
@@ -152,7 +152,7 @@ def _process_uploaded_file(f, album_id):
     photo.save()
     log.info('[%s] Photo object saved.  id = %s, order = %s' % (logid, photo.id,photo.order))
     #album.reorder_photos()
-    
+
     log.info('[%s] Attempting to save file %s to django model id %s' % (logid, orig_path, photo.id))
     f_ptr = open(orig_path,'rb')
     photo.filename.save('%s.jpg' % photo.id, File(f_ptr))
@@ -167,14 +167,14 @@ def _process_uploaded_file(f, album_id):
 def main_page(request):
 
     albums = Album.objects.order_by('-date').filter(published='1')[:ALBUM_PAGE_SIZE]
-    
+
     context = Context()
     context['albums'] = albums
     request_context = RequestContext(request)
     return render_to_response('homepage.html',
                               context,
                               request_context)
-    
+
 def album_list(request, page_id='1'):
 
     all_albums = Album.objects.all().order_by('-date').filter(published='1')
@@ -224,7 +224,7 @@ def album_view(request, album_id=None):
 
     if not album_id:
         return HttpResponseNotFound('No such album')
-        
+
     album = Album.objects.get(id=album_id)
     photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
 
@@ -241,7 +241,7 @@ def album_sort(request, album_id=None):
 
     if not album_id:
         return HttpResponseNotFound('No such album')
-        
+
     album = Album.objects.get(id=album_id)
     photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
 
@@ -259,12 +259,13 @@ def album_sort_ajax(request, album_id=None):
 
     if not album_id:
         return HttpResponseNotFound('No such album')
-        
+
     album = Album.objects.get(id=album_id)
 
+    # walk through the photo array that was posted and save
+    # each photo in order given
     for index, photo_id in enumerate(request.POST.getlist('photo[]')):
         photo = get_object_or_404(Photo, id=int(str(photo_id)))
-  
         photo.order = index
         photo.save()
 
@@ -275,7 +276,7 @@ def album_edit(request, album_id=None):
 
     if not album_id:
         return HttpResponseNotFound('No such album')
-        
+
     album = Album.objects.get(id=album_id)
     photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
 
@@ -287,18 +288,45 @@ def album_edit(request, album_id=None):
                               context,
                               request_context)
 
+@csrf_exempt
+@user_passes_test(lambda u: u.is_staff)
+def album_edit_ajax(request, album_id=None):
+
+    if not album_id:
+        return HttpResponseNotFound('No such album')
+
+    form = AlbumEditForm(request.POST)
+    if form.is_valid():
+        new_val = form.cleaned_data['value']
+        action,photo_id = form.cleaned_data['id'].split('|',1)
+
+        print action
+        print photo_id
+        print new_val
+        photo = get_object_or_404(Photo, id=int(str(photo_id)))
+        if action == 'title':
+            photo.title = new_val
+            photo.save()
+        elif action == 'description':
+            photo.description = new_val
+            photo.save()
+
+        return HttpResponse(new_val)
+    else:
+        return HttpResponseBadRequest('Invalid Parameters')
+
 @user_passes_test(lambda u: u.is_staff)
 def album_new(request):
-    
+
     if request.method == 'POST':
         form = AlbumForm(request.POST)
         if form.is_valid():
-            
+
             album = form.save()
             return redirect(album.get_url())
     else:
         form = AlbumForm()
-        
+
     context = Context()
     context['form'] = form
     request_context = RequestContext(request)
@@ -307,12 +335,12 @@ def album_new(request):
                               request_context)
 
 def photo_view(request, photo_id=None):
-    
+
     if not photo_id:
         return HttpResponseNotFound('No such photo')
 
     photo = Photo.objects.get(id=photo_id)
-    
+
     context = Context()
     context['photo'] = photo
 #    context['album'] = album
@@ -320,7 +348,7 @@ def photo_view(request, photo_id=None):
     return render_to_response('photo-view.html',
                               context,
                               request_context)
-    
+
 UPLOAD_FILE_FAIL = 0
 UPLOAD_FILE_IN_PROGRESS = 1
 UPLOAD_FILE_DONE = 2
@@ -332,7 +360,7 @@ def _receive_uploaded_file(request, f, album_id):
     name = request.REQUEST.get('name', '')
     if not name:
         name = f.name
-        
+
     print 'name: %s' % (name)
 
     temp_file = '%s%s' % (settings.TEMP_DIRECTORY,name)
@@ -355,7 +383,7 @@ def _receive_uploaded_file(request, f, album_id):
     return UPLOAD_FILE_IN_PROGRESS
 
 def photo_upload(request, album_id=None):
-    
+
     if not album_id:
         return HttpResponseNotFound('No such album')
     album = Album.objects.get(id=album_id)
@@ -363,14 +391,14 @@ def photo_upload(request, album_id=None):
     if request.method == 'POST':
         form = UploadPhotoForm(request.POST, request.FILES)
         if form.is_valid():
-            print 'got a file chunk!' 
+            print 'got a file chunk!'
             if request.FILES == None:
                 return HttpResponseBadRequest('Must have files attached!')
-    
+
             #getting file data for farther manipulations
             f = request.FILES[u'file']
             rc = _receive_uploaded_file(request, f, album_id)
-            
+
             if rc == UPLOAD_FILE_IN_PROGRESS:
                 return HttpResponse("Keep transmitting breaker breaker")
             elif rc == UPLOAD_FILE_DONE:
@@ -382,7 +410,7 @@ def photo_upload(request, album_id=None):
             return HttpResponseBadRequest('Bad data in form')
     else:
         form = UploadPhotoForm()
-        
+
     context = Context()
     context['form'] = form
     context['album_id'] = album_id
@@ -420,20 +448,20 @@ def loginerror(request):
 def test(request):
 
     log.info('Test received')
-    
+
     album = Album.objects.get(id='448')
     if album:
         log.info('Found Album: %s' % album.title)
         #album.reorder_photos()
     else:
         log.info('No Album found')
-        
-    
+
+
     return HttpResponse ('Test working!')
-    
+
 @user_passes_test(lambda u: u.is_staff)
 def album_upload(request,album_id):
-        
+
     album = Album.objects.get(id=album_id)
     if not album:
         return HttpResponseNotFound('No such album')

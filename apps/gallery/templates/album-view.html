@@ -5,56 +5,57 @@
 
 
 {% block additional_header_scripts %}
-	<link rel="stylesheet" href="{{ STATIC_URL }}photoswipe-3.0.5/photoswipe.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}photoswipe-3.0.5/photoswipe.css" />
 
-	<script type="text/javascript" src="{{ STATIC_URL }}photoswipe-3.0.5/lib/klass.min.js"></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}photoswipe-3.0.5/code.photoswipe-3.0.5.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}photoswipe-3.0.5/lib/klass.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}photoswipe-3.0.5/code.photoswipe-3.0.5.js"></script>
 
-	<script type="text/javascript">
-		(function(window, PhotoSwipe){
-			document.addEventListener('DOMContentLoaded', function(){
-				var
-					options = {},
-					instance = PhotoSwipe.attach( window.document.querySelectorAll('#gallery a'), options );
-			}, false);
-		}(window, window.Code.PhotoSwipe));
-		
-	</script>
+    <script type="text/javascript">
+        (function(window, PhotoSwipe){
+            document.addEventListener('DOMContentLoaded', function(){
+                var
+                    options = {},
+                    instance = PhotoSwipe.attach( window.document.querySelectorAll('#gallery a'), options );
+            }, false);
+        }(window, window.Code.PhotoSwipe));
+
+    </script>
 {%endblock%}
 
 
 {% block content %}
-		
-	<header class="page-header">
-		<h1 class="page-title">{{album.title}}</h1>
-	</header><!-- end .page-header -->
+
+    <header class="page-header">
+        <h1 class="page-title">{{album.title}}</h1>
+    </header><!-- end .page-header -->
 
     {% if user.is_authenticated and user.is_staff %}
-		<div class="widget">
-		    <a class="button" href="{% url album-upload album.id %}">Upload Photos</a>
-		    <a class="button" href="{% url album-sort album.id %}">Sort Photos</a>
-		</div><!-- end .widget -->        
-		<p></p>	
+        <div class="widget">
+            <a class="button" href="{% url album-upload album.id %}">Upload Photos</a>
+            <a class="button" href="{% url album-sort album.id %}">Sort Photos</a>
+            <a class="button" href="{% url album-edit album.id %}">Edit Album</a>
+        </div><!-- end .widget -->
+        <p></p>
     {% endif %}
     <!--section id="portfolio-items" class="clearfix"-->
-		<ul id="gallery" class="gallery">
-				{% for photo in album.photo_set.all %}
-						<div class="one-third {% cycle 'first' 'second' 'last' %}">
-						<li>
-								{% thumbnail photo.filename "1024x1024" as lg_im %}
-								<a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
-								{% endthumbnail %}
-									{% thumbnail photo.filename "300x190" as im %}
-									<img src="{{ im.url }}" alt="{{photo.title|escape}}" >
-									{% endthumbnail %}
-								</a>
-								<h5 class="title">{{photo.title|escape}}</h5>
-								<span class="categories">{{photo.description}}</span>
-						</li>
-						</div>
-				{% endfor %}
-		</ul>
-	<!--/section><!-- end #portfolio-items -->
+        <ul id="gallery" class="gallery">
+                {% for photo in album.photo_set.all %}
+                        <div class="one-third {% cycle 'first' 'second' 'last' %}">
+                        <li>
+                                {% thumbnail photo.filename "1024x1024" as lg_im %}
+                                <a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
+                                {% endthumbnail %}
+                                    {% thumbnail photo.filename "300x190" as im %}
+                                    <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
+                                    {% endthumbnail %}
+                                </a>
+                                <h5 class="title">{{photo.title|escape}}</h5>
+                                <span class="categories">{{photo.description}}</span>
+                        </li>
+                        </div>
+                {% endfor %}
+        </ul>
+    <!--/section><!-- end #portfolio-items -->
 
-	
+
 {% endblock %}

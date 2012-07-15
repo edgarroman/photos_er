@@ -17,3 +17,6 @@ class UploadPhotoForm(forms.Form):
         print 'File "%s" would presumably be saved to disk now.' % uploaded_file
         pass
 
+class AlbumEditForm(forms.Form):
+    value = forms.CharField(max_length=255,required=False)
+    id = forms.CharField(max_length=40)

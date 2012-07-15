@@ -7,9 +7,9 @@
 {% block additional_footer_scripts %}
     <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
     <script>
-        
-	$(function() {
-		$( "#sortgallery" ).sortable({
+
+    $(function() {
+        $( "#sortgallery" ).sortable({
             update: function(event,ui) {
                 var serial = $("#sortgallery").sortable('serialize');
                 $.ajax({
@@ -25,19 +25,19 @@
             }
         });
         $( "#sortgallery" ).disableSelection();
-	});
+    });
     </script>
-    
-    
+
+
 {%endblock%}
 
 
 {% block content %}
-		
-	<header class="page-header">
-		<h1 class="page-title">
-			<a href="{% url album-view album.id %}">{{album.title}}</a> - Sort Photos</h1>
-	</header><!-- end .page-header -->
+
+    <header class="page-header">
+        <h1 class="page-title">
+            <a href="{% url album-view album.id %}">{{album.title}}</a> - Sort Photos</h1>
+    </header><!-- end .page-header -->
 
     <a class="button" href="{% url album-view album.id %}">Done Sorting Photos</a>
 
@@ -61,5 +61,5 @@
         {% endfor %}
     </ul>
 
-	
+
 {% endblock %}
