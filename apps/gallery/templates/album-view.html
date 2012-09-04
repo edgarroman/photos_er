@@ -14,7 +14,9 @@
         (function(window, PhotoSwipe){
             document.addEventListener('DOMContentLoaded', function(){
                 var
-                    options = {},
+                    options = {
+                        'captionAndToolbarAutoHideDelay': 0
+                    },
                     instance = PhotoSwipe.attach( window.document.querySelectorAll('#gallery a'), options );
             }, false);
         }(window, window.Code.PhotoSwipe));
