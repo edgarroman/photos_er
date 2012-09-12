@@ -5,6 +5,11 @@
 
 
 {% block additional_header_scripts %}
+<link rel="image_src"
+    type="image/jpeg"
+    {% thumbnail photo.filename "300x190" as im %}
+    href="{{ im.url }}" />
+    {% endthumbnail %}
 {% endblock %}
 
 {% block additional_footer_scripts %}
@@ -20,6 +25,9 @@
         placeholder : "<em>Untitled - Click to add</em>"
     });
 
+    </script>
+    <!-- facebook stuff -->
+    <script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}
     </script>
 
 {%endblock%}
@@ -57,5 +65,14 @@
 Back to the Album</a>
       <br>
 </div>
+
+
+    <ul class="social-links">
+        {% if enable_social_media %}
+        <!--li class="twitter"><a href="#">Twitter</a></li-->
+        <li class="facebook"><a rel="nofollow" href="http://www.facebook.com/share.php?u=<;url>" onclick="return fbs_click()" target="_blank" >Facebook</a></li>
+        <!--li class="googleplus"><a href="#">Google Plus</a></li-->
+        {% endif %}
+    </ul><!-- end .social-links -->
 
 {% endblock %}
