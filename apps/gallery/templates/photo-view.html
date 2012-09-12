@@ -1,47 +1,44 @@
 {% extends "base.html" %}
-
-{% block title %}{{SITE_NAME}}{% endblock %}
-
 {% load thumbnail %}
+
+{% block title %}{{album.title}}{% endblock %}
+
+
+{% block additional_header_scripts %}
+{% endblock %}
+
 {% block content %}
-<DIV id="Main-Content" > 
- 
-<div id="PhotoView">
+
+<header class="page-header">
+    <h2 class="project-title">{{photo.title}}</h2>
+    <ul class="portfolio-pagination">
       {% if photo.prev_photo %}
-      <div id="PrevPhoto"> 
-      <a href="{% url photo-view photo.prev_photo.id %}"> 
-		Previous Photo</a></div>
+        <li class="prev"><a href="{% url photo-view photo.prev_photo.id %}" class="button medium no-bg"><span class="arrow left">&raquo;</span> Previous</a></li>
       {% endif %}
       {% if photo.next_photo %}
-      <div id="NextPhoto"> 
-      <a href="{% url photo-view photo.next_photo.id %}"> 
-		Next Photo
-      </a></div>
-      <script language="javascript"> 
-	    <!-- cache the next image
-	    ImageNext= new Image();
-	    ImageNext.src = "{% thumbnail photo.filename 1000x1000 %}"
-	    //end hiding -->
-      </script> 
+        <li class="next"><a href="{% url photo-view photo.next_photo.id %}" class="button medium no-bg">Next <span class="arrow">&raquo;</span></a></li>
+          <script language="javascript">
+            <!-- cache the next image
+            ImageNext= new Image();
+            {% thumbnail photo.filename "1024x1024" as lg_im %}
+                ImageNext.src = "{{ lg_im.url }}"
+            {% endthumbnail %}
+              //end hiding -->
+          </script>
       {% endif %}
- 
-<div id="PhotoAndTitle"> 
-<h2 id="PhotoTitle"> 
-{{ photo.title }}
-</h2> 
-<div id="PhotoImage">
-      <a href="{{ photo.filename.url }}">
-	    <img src="{% thumbnail photo.filename 1000x1000 %}" width="100%" alt="{{photo.title|escape}}">
-      </a>
-</div> 
-<table  border=0> 
-</table> 
-</div> 
-</div> <!-- PhotoView --> 
-<p> 
-<a href="{% url album-view photo.album.id %}"> 
-Back to the Album</a> 
-	<br> 
-</div> 
+    </ul><!-- end .portfolio-pagination -->
+
+</header><!-- end .page-header -->
+
+
+
+    {% thumbnail photo.filename "1024x1024" as lg_im %}
+    <img src="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
+    {% endthumbnail %}
+<p>
+<a href="{% url album-view photo.album.id %}">
+Back to the Album</a>
+      <br>
+</div>
 
 {% endblock %}

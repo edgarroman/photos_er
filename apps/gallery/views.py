@@ -345,7 +345,6 @@ def photo_view(request, photo_id=None):
 
     context = Context()
     context['photo'] = photo
-#    context['album'] = album
     request_context = RequestContext(request)
     return render_to_response('photo-view.html',
                               context,

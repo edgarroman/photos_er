@@ -175,9 +175,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     'apps.gallery.context_processors.branding_variables',
-    'apps.gallery.context_processors.user_vars',    
+    'apps.gallery.context_processors.user_vars',
     'social_auth.context_processors.social_auth_by_type_backends',
-    
+
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -198,6 +198,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# turns on twitter/facebook/google buttons
+ENABLE_SOCIAL_MEDIA = True
 
 SOCIAL_AUTH_ENABLED_BACKENDS = ('google',)
 

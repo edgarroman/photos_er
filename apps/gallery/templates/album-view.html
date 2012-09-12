@@ -17,7 +17,7 @@
                     options = {
                         'captionAndToolbarAutoHideDelay': 0
                     },
-                    instance = PhotoSwipe.attach( window.document.querySelectorAll('#gallery a'), options );
+                    instance = PhotoSwipe.attach( window.document.querySelectorAll('#gallery a.single-image'), options );
             }, false);
         }(window, window.Code.PhotoSwipe));
 
@@ -52,7 +52,15 @@
                                     {% endthumbnail %}
                                 </a>
                                 <h5 class="title">{{photo.title|escape}}</h5>
-                                <span class="categories">{{photo.description}}</span>
+
+                                <ul class="social-links">
+                                    <li class="picasa"><a href="{% url photo-view photo.id %}">View Photo</a></li>
+                                    {% if enable_social_media %}
+                                    <li class="twitter"><a href="#">Twitter</a></li>
+                                    <li class="facebook"><a href="#">Facebook</a></li>
+                                    <li class="googleplus"><a href="#">Google Plus</a></li>
+                                    {% endif %}
+                                </ul><!-- end .social-links -->
                         </li>
                         </div>
                 {% endfor %}

@@ -43,10 +43,10 @@ class Album(models.Model):
     passwordprotected = models.IntegerField(db_column='PasswordProtected', default=0) # Field name made lowercase.
     class Meta:
         db_table = u'tblAlbums'
-    
+
     def __unicode__(self):
         return self.title
-    
+
     def get_url(self):
         return reverse('album-view', args=(self.id,))
     get_url.short_description = 'Link to album'
@@ -56,7 +56,7 @@ class Album(models.Model):
         return '<a href="%s">%s</a>' % (link, link)
     get_link.short_description = 'Link to album'
     get_link.allow_tags = True
-    
+
 class Photo(models.Model):
 #    id = models.BigIntegerField(primary_key=True)
 #    filename = models.CharField(max_length=765, db_column='FileName', editable=False) # Field name made lowercase.
@@ -75,25 +75,25 @@ class Photo(models.Model):
         ordering = ['order','photodate']
 
     def thumb(self):
-        
+
         thumbnail_options = dict(size=(100, 100), crop=True)
         #thumb_url = get_thumbnailer(self.filename).get_thumbnail(thumbnail_options).url
         thumb_url =''
         return "<img src='%s' width=100px />" % (thumb_url)
     thumb.allow_tags = True
-    
+
     def path(self):
-        return "%s/origsize/%s.jpg" % (settings.MEDIA_PHOTO_PATH, self.id)                
-        
-    def next_photo(self):        
+        return "%s/origsize/%s.jpg" % (settings.MEDIA_PHOTO_PATH, self.id)
+
+    def next_photo(self):
             photo_qs = Photo.objects.filter(order__gt=self.order,album=self.album).order_by('order')
             if len(photo_qs) == 0:
                 return None
             else:
                 return photo_qs[0]
-                
-    def prev_photo(self):        
-            photo_qs = Photo.objects.filter(order__lt=self.order,album=self.album).order_by('-order')
+
+    def prev_photo(self):
+            photo_qs = Photo.objects.filter(album=self.album,order__lt=self.order).order_by('-order')
             if len(photo_qs) == 0:
                 return None
             else:
@@ -108,14 +108,14 @@ class Photo(models.Model):
 
     def __unicode__(self):
         return self.title
-    
+
     def delete(self):
-        
+
         try:
             unlink (self.filename.path)
         except error as e:
             pass
-        
+
         # TODO: unlink thumbnail files too!
         super(Photo, self).delete()
 
