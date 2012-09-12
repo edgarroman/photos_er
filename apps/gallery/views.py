@@ -342,9 +342,11 @@ def photo_view(request, photo_id=None):
         return HttpResponseNotFound('No such photo')
 
     photo = Photo.objects.get(id=photo_id)
+    album = photo.album
 
     context = Context()
     context['photo'] = photo
+    context['album'] = album
     request_context = RequestContext(request)
     return render_to_response('photo-view.html',
                               context,
