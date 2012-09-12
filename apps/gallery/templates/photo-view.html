@@ -38,7 +38,9 @@
     <h2 class="project-title
         {% if user.is_authenticated and user.is_staff %}
         click{%endif%}"
-        id="title|{{photo.id}}">{{photo.title}}</h2>
+        id="title|{{photo.id}}">{{photo.title}}
+    </h2>
+
     <ul class="portfolio-pagination">
       {% if photo.prev_photo %}
         <li class="prev"><a href="{% url photo-view photo.prev_photo.id %}" class="button medium no-bg"><span class="arrow left">&raquo;</span> Previous</a></li>
@@ -61,9 +63,9 @@
     <img src="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
     {% endthumbnail %}
 <p>
-<a href="{% url album-view photo.album.id %}">
-Back to the Album</a>
-      <br>
+    <a href="{% url album-view photo.album.id %}" class="button no-bg large">
+        Back to the Album<img src="{{STATIC_URL}}smartstart/img/icon-grid.png" alt="" class="icon">
+    </a>
 </div>
 
 
