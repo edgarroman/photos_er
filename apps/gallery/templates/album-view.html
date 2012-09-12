@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load thumbnail %}
+{% load humanize thumbnail %}
 
 {% block title %}{{album.title}}{% endblock %}
 
@@ -34,7 +34,7 @@
 
     <header class="page-header">
         <h1 class="page-title">{{album.title}}</h1>
-        <h4 class="align-right">Album Date: {{album.date|naturaldate}}</h4>
+        <h4 class="align-right">Album Date: {{album.date|naturalday}}</h4>
     </header><!-- end .page-header -->
 
     {% if user.is_authenticated and user.is_staff %}
