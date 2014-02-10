@@ -211,7 +211,6 @@ SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 SOCIAL_AUTH_ERROR_KEY = 'social_errors'
 
-BRAND_COPYRIGHT='Copyright (c) 2012 Edgar Roman. All Rights Reserved.'
 BRAND_SITE_TITLE='photos.edgarroman.com'
 BRAND_LOGO='logo.png'
 BRAND_GA_CODE = ''
