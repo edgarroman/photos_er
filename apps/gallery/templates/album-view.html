@@ -61,6 +61,7 @@
     });
     </script>
     <h1>{{album.title}}</h1>
+    <h3 class="tagline">{{album.description}}</h3>
     <div class="widget" style="float:right;padding-bottom:1em;">
         {% if user.is_authenticated and user.is_staff %}
         <a class="btn btn-primary" href="{% url album-upload album.id %}">Upload Photos</a>
