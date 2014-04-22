@@ -5,16 +5,30 @@
 {% block menu-highlight-home %}class="current"{% endblock %}
 
 {% block content %}
-
-	<header class="page-header">
-		<h1 class="page-title">Newest Albums</h1>
-	</header><!-- end .page-header -->
-
-	<section id="main">
-	{% for album in albums %}
-		{% include "album-list-element.html" %} 
-	{% endfor %}
-	</section><!-- end #main -->
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+        <h1>Newest Albums</h1>
+            <div id="blog-posts">
+            {% for album in albums %}
+                {% include "album-list-element.html" %}
+            {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-3 sidebar well">
+            <form class="form-search">
+              <input type="text" class="input-medium search-query" placeholder="Search..."> <button type="submit" class="btn btn-primary" style="margin-top: -3px;"><i class="icon-search"></i></button></form>
+            <h3>Archives</h3>
+            <ul class="icons">
+                <li><a href="#"><i class="icon-angle-right"></i>June 2013</a></li>
+                <li><a href="#"><i class="icon-angle-right"></i>May 2013</a></li>
+                <li><a href="#"><i class="icon-angle-right"></i>April 2013</a></li>
+                <li><a href="#"><i class="icon-angle-right"></i>March 2013</a></li>
+                <li><a href="#"><i class="icon-angle-right"></i>February 2013</a></li>
+                <li><a href="#"><i class="icon-angle-right"></i>January 2013</a></li>
+                <li><a href="#"><i class="icon-angle-right"></i>December 2012</a></li>
+            </ul>
+    </div>
+</div>
 
 {% endblock %}

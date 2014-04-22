@@ -33,9 +33,8 @@
 
 
 {% block content %}
-
-    <header class="page-header">
-        <h1 class="page-title">
+<div class="container">
+        <h1>
             <a href="{% url album-view album.id %}">{{album.title}}</a> - Sort Photos</h1>
     </header><!-- end .page-header -->
 
@@ -50,7 +49,7 @@
                 {% thumbnail photo.filename "1024x1024" as lg_im %}
                 <a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
                 {% endthumbnail %}
-                    {% thumbnail photo.filename "300x190" as im %}
+                    {% thumbnail photo.filename "300x300" as im %}
                     <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
                     {% endthumbnail %}
                 </a>
@@ -61,5 +60,6 @@
         {% endfor %}
     </ul>
 
+</div>
 
 {% endblock %}

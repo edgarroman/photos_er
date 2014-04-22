@@ -22,11 +22,10 @@
 
 
 {% block content %}
+<div class="container">
 
-    <header class="page-header">
-        <h1 class="page-title">
+    <h1>
             <a href="{% url album-view album.id %}">{{album.title}}</a> - Edit Album</h1>
-    </header><!-- end .page-header -->
 
     <a class="button" href="{% url album-view album.id %}">Done Editing Album</a>
 
@@ -36,7 +35,7 @@
         {% for photo in album.photo_set.all %}
             <div id="photo_{{photo.id}}" class="one-third {% cycle '' '' 'last' %}">
             <li class="single-image">
-                {% thumbnail photo.filename "300x190" as im %}
+                {% thumbnail photo.filename "300x300" as im %}
                 <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
                 {% endthumbnail %}
                 <h5 class="title click button no-bg" id="title|{{photo.id}}">{{photo.title|escape}}</h5>
@@ -46,5 +45,6 @@
         {% endfor %}
     </ul>
 
+</div>
 
 {% endblock %}

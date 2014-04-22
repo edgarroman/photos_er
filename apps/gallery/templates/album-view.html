@@ -5,6 +5,10 @@
 
 
 {% block additional_header_scripts %}
+
+    <script src="{{ STATIC_URL }}influence/lib/jquery.isotope.min.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}influence/stylesheets/isotope.css">
+
     <link rel="stylesheet" href="{{ STATIC_URL }}photoswipe-3.0.5/photoswipe.css" />
 
     <script type="text/javascript" src="{{ STATIC_URL }}photoswipe-3.0.5/lib/klass.min.js"></script>
@@ -28,50 +32,77 @@
     <!-- facebook stuff -->
     <script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}
     </script>
+
+    <script type="text/javascript">
+        $('.social').hide();
+        function onToggle()
+        {
+            if ($('.social').is(":visible")  )
+                $('.social').hide();
+            else
+                $('.social').show();
+            $('#gallery').isotope('reLayout');
+        };
+    </script>
 {%endblock%}
 
 {% block content %}
+<div class="container">
+    <script type="text/javascript">
+    $(function(){
+        $('#gallery').imagesLoaded( function(){
+            $(this).isotope(
+            {
+//                itemSelector : '.photoitem',
+                layoutMode: 'masonry'
+            });
+        });
+        //fancyFilter('.filter', '#gallery');
+    });
+    </script>
+    <h1>{{album.title}}</h1>
+    <div class="widget" style="float:right;padding-bottom:1em;">
+        {% if user.is_authenticated and user.is_staff %}
+        <a class="btn btn-primary" href="{% url album-upload album.id %}">Upload Photos</a>
+        <a class="btn btn-primary" href="{% url album-sort album.id %}">Sort Photos</a>
+        <a class="btn btn-primary" href="{% url album-edit album.id %}">Edit Album</a>
+        {% endif %}
+        <a class="btn btn-primary" onclick="onToggle();" >Controls</a>
+    </div><!-- end .widget -->
+    <br>
 
-    <header class="page-header">
-        <h1 class="page-title">{{album.title}}</h1>
-        <h4 class="align-right">Album Date: {{album.date|naturalday}}</h4>
-    </header><!-- end .page-header -->
-
-    {% if user.is_authenticated and user.is_staff %}
-        <div class="widget">
-            <a class="button" href="{% url album-upload album.id %}">Upload Photos</a>
-            <a class="button" href="{% url album-sort album.id %}">Sort Photos</a>
-            <a class="button" href="{% url album-edit album.id %}">Edit Album</a>
-        </div><!-- end .widget -->
-        <p></p>
-    {% endif %}
-    <!--section id="portfolio-items" class="clearfix"-->
-        <ul id="gallery" class="gallery">
-                {% for photo in album.photo_set.all %}
-                        <div class="one-third {% cycle 'first' 'second' 'last' %}">
-                        <li>
-                                {% thumbnail photo.filename "1024x1024" as lg_im %}
-                                <a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
-                                {% endthumbnail %}
-                                    {% thumbnail photo.filename "300x190" as im %}
-                                    <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
-                                    {% endthumbnail %}
-                                </a>
-                                <h5 class="title">{{photo.title|escape}}</h5>
-
-                                <ul class="social-links">
-                                    <li class="picasa"><a href="{% url photo-view photo.id %}">View Photo</a></li>
-                                    {% if enable_social_media %}
-                                        <!--li class="twitter"><a href="#">Twitter</a></li-->
-                                        <li class="facebook"><a rel="nofollow" href="http://www.facebook.com/share.php?u=<;url>" onclick="return fbs_click()" target="_blank" >Facebook</a></li>
-                                        <!--li class="googleplus"><a href="#">Google Plus</a></li-->
-                                    {% endif %}
-                                </ul><!-- end .social-links -->
-                        </li>
-                        </div>
-                {% endfor %}
-        </ul>
-    <!--/section><!-- end #portfolio-items -->
+    <h4 class="align-right">Album Date: {{album.date|naturalday}}</h4>
 
 
+    <div id="gallery" class="gallery four" style="clear: both;">
+        {% for photo in album.photo_set.all %}
+
+
+            <div class="element col-md-4 pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                {% thumbnail photo.filename "1024x1024" as lg_im %}
+                <a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
+                {% endthumbnail %}
+                <div >
+                {% thumbnail photo.filename "300x300" as im %}
+                <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
+                {% endthumbnail %}
+                </div>
+
+                <h4>{{photo.title|escape}}</h4>
+                <div class="social">
+                    {% if enable_social_media %}
+                    <a rel="nofollow" href="http://www.facebook.com/share.php?u=<;url>" onclick="return fbs_click()" target="_blank" ><i class="icon-facebook"></i></a>
+                    <a href="https://twitter.com/share"
+                    data-url="{% url photo-view photo.id %}"
+                    data-count='none'>
+                    <i class="icon-twitter"></i></a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+                    {% endif %}
+                    <a href="{% url photo-view photo.id %}"><i class="icon-zoom-in"></i></a>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
 {% endblock %}

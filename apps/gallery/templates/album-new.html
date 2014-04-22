@@ -3,17 +3,17 @@
 {% block title %}{{SITE_NAME}}: create new album{% endblock %}
 {% block menu-highlight-new %}class="current"{% endblock %}
 {% block content %}
-	
-	<header class="page-header">
-		<h1 class="page-title">Add a New Album</h1>
-	</header><!-- end .page-header -->
 
-	<section id="main">
-		<form method="POST">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit" />
-		</form>
-	</section><!-- end #main -->
-	
+<div class="container">
+        <h1>Add a New Album</h1>
+
+    <section id="main">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" />
+        </form>
+    </section><!-- end #main -->
+</div>
+
 {% endblock %}

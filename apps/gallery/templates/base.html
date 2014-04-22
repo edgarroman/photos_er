@@ -1,110 +1,113 @@
 <!DOCTYPE html>
-<!--[if IE 7]>                  <html class="ie7 no-js" lang="en">     <![endif]-->
-<!--[if lte IE 8]>              <html class="ie8 no-js" lang="en">     <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> <html class="not-ie no-js" lang="en">  <!--<![endif]-->
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>{% block title %}{{ brand_title }}{% endblock %}</title>
+    <title>{% block title %}{{ brand_title }}{% endblock %}</title>
 
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="stylesheet" href="{{ STATIC_URL }}smartstart/css/style.css" media="screen" />
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,300,800,700,400italic|PT+Serif:400,400italic" />
-	<!--link rel="stylesheet" href="{{ STATIC_URL }}smartstart/css/fancybox.min.css" media="screen" /-->
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-	<!--[if lte IE 6]>
-		<link rel="stylesheet" href="//universal-ie6-css.googlecode.com/files/ie6.1.1.css" media="screen, projection">
-	<![endif]-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}influence/lib/bootstrap3/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}influence/lib/FontAwesome/css/font-awesome.min.css">
+    <script src="{{ STATIC_URL }}influence/lib/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}influence/javascripts/site.js" type="text/javascript"></script>
 
-	<!-- HTML5 Shiv + detect touch events -->
-	<script src="{{ STATIC_URL }}smartstart/js/modernizr.custom.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}influence/stylesheets/theme.css">
 
-	{% if brand_ga_code %}
-	<!-- Google Analytics : start -->
-	<script type="text/javascript">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '{{ brand_ga_code }}']);
-	  _gaq.push(['_trackPageview']);
+    {% if brand_ga_code %}
+    <!-- Google Analytics : start -->
+    <script type="text/javascript">
 
-	  (function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ brand_ga_code }}']);
+      _gaq.push(['_trackPageview']);
 
-	</script>
-	<!-- Google Analytics : end -->
-	{% endif %}
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
 
-	{% block additional_header_scripts %}{%endblock%}
+    </script>
+    <!-- Google Analytics : end -->
+    {% endif %}
 
-</head>
-<body>
+    {% block additional_header_scripts %}{%endblock%}
 
-<header id="header" class="container clearfix">
-	<a href="index.html" id="logo">
-		<!--img src="img/logo.png" alt="SmartStart"-->
-	</a>
-	<nav id="main-nav">
+  </head>
 
-		<ul>
-			<li {% block menu-highlight-home %}{% endblock %}>
-				<a href="{% url home %}" data-description="See the newest Albums">Home</a>
-			</li>
-			<li {% block menu-highlight-albums %}{% endblock %}>
-				<a href="{% url album-list '1' %}" target="_self" >Albums</a></li>
-			<li {% block menu-highlight-by-year %}{% endblock %}>
-				<a href="{% url album-list-by-year-years %}" target="_self" >Albums by Year</a></li>
-			{% if user.is_authenticated and user.is_staff %}
-			<li {% block menu-highlight-new %}{% endblock %}>
-				<a href="{% url album-new %}">Add New Album</a></li>
-			{% endif %}
+<!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]> <body class="ie ie7 "> <![endif]-->
+<!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
+<!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<body class="">
+<!--<![endif]-->
 
-		</ul>
-	</nav><!-- end #main-nav -->
-</header><!-- end #header -->
+    <div class="navbar">
+
+        <div class="container">
+            <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                      <i class="icon-align-justify"></i>
+                  </button>
+                  <a class="navbar-brand" href="{% url home %}">photo site</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class=" ">
+                        <a href="{% url home %}"><span>Home</span></a>
+                    </li>
+                    <li class=" ">
+                        <a href="{% url album-list '1' %}"><span>Albums</span></a></li>
+                    <li {% block menu-highlight-by-year %}{% endblock %}>
+                        <a href="{% url album-list-by-year-years %}" ><span>Albums by Year</span></a></li>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li class=" ">
+                        <a href="{% url album-new %}"><span>Add New Album</span></a></li>
+                    {% endif %}
+                </ul>
+            </div><!--/.navbar-collapse -->
+        </div>
+    </div>
+
+
 
 
 <!-------------------------------- contents -------------------------->
-<section id="content" class="container clearfix">
+<div class="content">
 {% block content %}{% endblock %}
-</section><!-- end #content -->
-<!-------------------------------- footer -------------------------->
+</div><!-- end #content -->
 
-<footer id="footer-bottom" class="clearfix">
-    <div class="container">
-		<!--- START COPYRIGHT -->
-		<ul>
-			<li>Copyright (c) {% now "Y" %} All Rights Reserved</li>
-			{% if user.is_authenticated %}
-				<li>
-				<a href="{% url logout %}">Logout</a>
-				</li>
-			{% else %}
-				<li>
-				<a href="{{ login_url }}">Login</a>
-				</li>
-			{% endif %}
-		</ul>
-    </div><!-- end .container -->
-</footer><!-- end #footer-bottom -->
+
+<!-------------------------------- footer -------------------------->
+<div class="footer-spacer"></div>
+    <footer>
+        <div class="bottom-footer">
+            <p class="pull-right">
+            {% if user.is_authenticated %}
+                <a href="{% url logout %}">Logout</a>
+            {% else %}
+                <a href="{{ login_url }}">Login</a>
+            {% endif %}
+            </p>
+            <div class="social">
+                Copyright (c) {% now "Y" %} All Rights Reserved
+            </div>
+        </div>
+        </div>
+    </footer>
 
 {% block footer_scripts %}
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<!--[if lt IE 9]> <script src="{{ STATIC_URL }}smartstart/js/selectivizr-and-extra-selectors.min.js"></script> <![endif]-->
-<script src="{{ STATIC_URL }}smartstart/js/respond.min.js"></script>
-<script src="{{ STATIC_URL }}smartstart/js/jquery.easing-1.3.min.js"></script>
-<script src="{{ STATIC_URL }}smartstart/js/jquery.smartStartSlider.min.js""></script>
-<script src="{{ STATIC_URL }}smartstart/js/jquery.jcarousel.min.js"></script>
-<script src="{{ STATIC_URL }}smartstart/js/jquery.cycle.all.min.js"></script>
-<script src="{{ STATIC_URL }}smartstart/js/jquery.isotope.min.js"></script>
-<script src="{{ STATIC_URL }}smartstart/js/jquery.touchSwipe.min.js"></script>
-<script src="{{ STATIC_URL }}smartstart/js/custom.js?invalidate"></script>
+    <script src="{{ STATIC_URL }}influence/lib/bootstrap3/dist/js/bootstrap.js"></script>
 
 {% block additional_footer_scripts %}
 {%endblock%}

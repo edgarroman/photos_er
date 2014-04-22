@@ -1,25 +1,21 @@
 {% load humanize thumbnail its %}
-
-		<article class="entry clearfix">
-			<div class="">
-				<a href="{% url album-view album.id %}">
-					<h1 class="title">{{album.title}}</h1>
-				</a>
-				<p>{{album.description}}</p>
-
-			</div><!-- end .entry-body -->
-			<a href="{% url album-view album.id %}" title="{{album.title}}">
-				{% for photo in album.photo_set.all|dictsort:"order"|slice:":3" %}
-			        {% thumbnail photo.filename "200x200" crop="center" as im %}
-			            <img src="{{ im.url }}" alt="{{photo.title|escape}}">
-		            {% endthumbnail %}
-				{% endfor %}
-			</a>
-			<div class="entry-meta">
-				<ul>
-					<li><span class="title">Date:</span> <a href="{% url album-view album.id %}">{{album.date|naturalday}}</a></li>
-					<li><span class="title">Photos:</span> <a href="{% url album-view album.id %}">{{album.photo_set.count}}</a></li>
-				</ul>
-			</div><!-- end .entry-meta -->
-
-		</article><!-- end .entry -->
+        <div class="blog-post row sampleFilterOnetrue sampleFilterTwotrue">
+            <div class="col-md-6">
+                <a href="{% url album-view album.id %}" class="thumb">
+                {% for photo in album.photo_set.all|dictsort:"order"|slice:":1" %}
+                    {% thumbnail photo.filename "720x480" crop="center" as im %}
+                        <img src="{{ im.url }}" alt="{{photo.title|escape}}"
+                        class="img-responsive hidden-xs">
+                    {% endthumbnail %}
+                {% endfor %}
+                </a>
+            </div>
+            <div class="col-md-6">
+                <div class="post-summary">
+                    <p class="muted date">{{album.date|naturalday}}</p>
+                    <h3><a href="{% url album-view album.id %}">{{album.title}}</a></h3>
+                    <p>{{album.description}}</p>
+                    <p><a class="btn btn-sm" href="{% url album-view album.id %}">View Photos</a></p>
+                </div>
+            </div>
+        </div>
