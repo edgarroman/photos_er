@@ -6,32 +6,36 @@
 
 
 {% block content %}
-	
-	<header class="page-header">
-		<h1 class="page-title">Photo Albums</h1>
-	</header><!-- end .page-header -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+        <h1>Albums</h1>
+            <div id="blog-posts">
+                {% for album in albums %}
+                    {% include "album-list-element.html" %}
+                {% endfor %}
+            </div>
 
-	<section id="main">
-	{% for album in albums %}
-		{% include "album-list-element.html" %} 
-	{% endfor %}
-	
-	<ul class="pagination">
-		{% ifnotequal albums.number 1 %}
-		<li class="next"><a href="{% url album-list 1 %}">First</a></li>
-		{% endifnotequal %}			
-		{% if albums.has_previous %}
-		<li class="next"><a href="{% url album-list albums.previous_page_number %}">&larr; Previous</a></li>
-		{% endif %}	
-		<li class="current">{{ albums.number }}</li>
-		{% if albums.has_next %}
-		<li class="prev"><a href="{% url album-list albums.next_page_number %}">Next &rarr;</a></li>
-		{% endif %}
-		{% ifnotequal albums.number last_page %}
-		<li class="next"><a href="{% url album-list last_page %}">Last</a></li>
-		{% endifnotequal %}			
-	</ul>
+            <div style="margin-top: 0px;">
+                <ul class="fancy pagination">
+                    {% if albums.has_previous %}
+                    <li><a href="{% url album-list albums.previous_page_number %}">«</a></li>
+                    {% endif %}
+                    {% for page in prange %}
+                        {% if page = albums.number %}
+                        <li class="active"><a href="#">{{page}}</a></li>
+                        {% else %}
+                        <li><a href="{% url album-list page %}">{{page}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if albums.has_next %}
+                    <li><a href="{% url album-list albums.next_page_number %}">»</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
-	</section><!-- end #main -->
-	
+
 {% endblock %}

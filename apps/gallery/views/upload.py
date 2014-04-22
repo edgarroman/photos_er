@@ -2,23 +2,13 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadReque
 from apps.gallery.models import *
 from django.template import Context, RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from django.db.models import Count
-from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import redirect
-from apps.gallery.forms import AlbumForm, UploadPhotoForm, AlbumEditForm
 from django.contrib.auth.decorators import user_passes_test
-from django.views.decorators.csrf import csrf_exempt
-from django.http import Http404
+from apps.gallery.forms import AlbumForm, UploadPhotoForm, AlbumEditForm
 
 import logging
 logfile = settings.TEMP_DIRECTORY + 'applog.log'
 logging.basicConfig(filename=logfile,level=logging.INFO)
 log = logging
-
-ALBUM_PAGE_SIZE = 10
-
 
 from django.core.files.uploadedfile import UploadedFile
 from django.views.decorators.csrf import csrf_exempt
@@ -164,194 +154,6 @@ def _process_uploaded_file(f, album_id):
     unlink(orig_path)
 
 
-def main_page(request):
-
-    albums = Album.objects.order_by('-date').filter(published='1')[:ALBUM_PAGE_SIZE]
-
-    context = Context()
-    context['albums'] = albums
-    request_context = RequestContext(request)
-    return render_to_response('homepage.html',
-                              context,
-                              request_context)
-
-def album_list(request, page_id='1'):
-
-    all_albums = Album.objects.all().order_by('-date').filter(published='1')
-    paginator = Paginator(all_albums, ALBUM_PAGE_SIZE)
-    try:
-        albums = paginator.page(page_id)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        albums = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        albums = paginator.page(paginator.num_pages)
-
-    context = Context()
-    context['albums'] = albums
-    context['last_page'] = paginator.num_pages
-    request_context = RequestContext(request)
-    return render_to_response('album-list.html',
-                              context,
-                              request_context)
-
-def album_list_by_year(request, year=None):
-
-    albums = Album.objects.order_by('date').filter(published='1',date__year=year)
-
-    context = Context()
-    context['albums'] = albums
-    context['next_page_id'] = None
-    context['prev_page_id'] = None
-    request_context = RequestContext(request)
-    return render_to_response('album-list.html',
-                              context,
-                              request_context)
-
-def album_list_by_year_years(request):
-
-    album_dates = Album.objects.dates('date','year',order='DESC')
-
-    context = Context()
-    context['album_dates'] = album_dates
-    request_context = RequestContext(request)
-    return render_to_response('album-list-by-year.html',
-                              context,
-                              request_context)
-
-def album_view(request, album_id=None):
-
-    if not album_id:
-        return HttpResponseNotFound('No such album')
-
-    album = Album.objects.get(id=album_id)
-    photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
-
-    context = Context()
-    context['photos'] = photos
-    context['album'] = album
-    request_context = RequestContext(request)
-    return render_to_response('album-view.html',
-                              context,
-                              request_context)
-
-@user_passes_test(lambda u: u.is_staff)
-def album_sort(request, album_id=None):
-
-    if not album_id:
-        return HttpResponseNotFound('No such album')
-
-    album = Album.objects.get(id=album_id)
-    photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
-
-    context = Context()
-    context['photos'] = photos
-    context['album'] = album
-    request_context = RequestContext(request)
-    return render_to_response('album-sort.html',
-                              context,
-                              request_context)
-
-@csrf_exempt
-@user_passes_test(lambda u: u.is_staff)
-def album_sort_ajax(request, album_id=None):
-
-    if not album_id:
-        return HttpResponseNotFound('No such album')
-
-    album = Album.objects.get(id=album_id)
-
-    # walk through the photo array that was posted and save
-    # each photo in order given
-    for index, photo_id in enumerate(request.POST.getlist('photo[]')):
-        photo = get_object_or_404(Photo, id=int(str(photo_id)))
-        photo.order = index
-        photo.save()
-
-    return HttpResponse("Ok")
-
-@user_passes_test(lambda u: u.is_staff)
-def album_edit(request, album_id=None):
-
-    if not album_id:
-        return HttpResponseNotFound('No such album')
-
-    album = Album.objects.get(id=album_id)
-    photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
-
-    context = Context()
-    context['photos'] = photos
-    context['album'] = album
-    request_context = RequestContext(request)
-    return render_to_response('album-edit.html',
-                              context,
-                              request_context)
-
-@csrf_exempt
-@user_passes_test(lambda u: u.is_staff)
-def album_edit_ajax(request, album_id=None):
-
-    if not album_id:
-        return HttpResponseNotFound('No such album')
-    album = get_object_or_404(Album, id=album_id)
-
-    form = AlbumEditForm(request.POST)
-    if form.is_valid():
-        new_val = form.cleaned_data['value']
-        action,photo_id = form.cleaned_data['id'].split('|',1)
-
-        photo = get_object_or_404(Photo, id=int(str(photo_id)))
-        # verify photo exists in current album
-        if photo.album != album:
-            return HttpResponseBadRequest('Wrong album')
-
-        if action == 'title':
-            photo.title = new_val
-            photo.save()
-        elif action == 'description':
-            photo.description = new_val
-            photo.save()
-
-        return HttpResponse(new_val)
-    else:
-        return HttpResponseBadRequest('Invalid Parameters')
-
-@user_passes_test(lambda u: u.is_staff)
-def album_new(request):
-
-    if request.method == 'POST':
-        form = AlbumForm(request.POST)
-        if form.is_valid():
-
-            album = form.save()
-            return redirect(album.get_url())
-    else:
-        form = AlbumForm()
-
-    context = Context()
-    context['form'] = form
-    request_context = RequestContext(request)
-    return render_to_response('album-new.html',
-                              context,
-                              request_context)
-
-def photo_view(request, photo_id=None):
-
-    if not photo_id:
-        return HttpResponseNotFound('No such photo')
-
-    photo = Photo.objects.get(id=photo_id)
-    album = photo.album
-
-    context = Context()
-    context['photo'] = photo
-    context['album'] = album
-    request_context = RequestContext(request)
-    return render_to_response('photo-view.html',
-                              context,
-                              request_context)
-
 UPLOAD_FILE_FAIL = 0
 UPLOAD_FILE_IN_PROGRESS = 1
 UPLOAD_FILE_DONE = 2
@@ -421,46 +223,6 @@ def photo_upload(request, album_id=None):
     return render_to_response('photo-upload.html',
                               context,
                               request_context)
-
-
-def login(request):
-    context = Context()
-    request_context = RequestContext(request)
-    return render_to_response('login.html',
-                              context,
-                              request_context)
-
-from django.contrib.auth import logout as auth_logout
-
-def logout(request):
-    auth_logout(request)
-    # Redirect to homepage.
-    return redirect('/')
-
-from social_auth import __version__ as version
-from django.contrib.messages.api import get_messages
-
-def loginerror(request):
-
-    messages = get_messages(request)
-    return render_to_response('loginerror.html', {'version': version,
-                                             'messages': messages},
-                              RequestContext(request))
-
-
-def test(request):
-
-    log.info('Test received')
-
-    album = Album.objects.get(id='448')
-    if album:
-        log.info('Found Album: %s' % album.title)
-        #album.reorder_photos()
-    else:
-        log.info('No Album found')
-
-
-    return HttpResponse ('Test working!')
 
 @user_passes_test(lambda u: u.is_staff)
 def album_upload(request,album_id):

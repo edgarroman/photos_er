@@ -219,6 +219,8 @@ BRAND_BACKGROUND_COLOR = '#0c2841'
 
 TEMP_DIRECTORY = ''
 
+ALBUM_PAGE_SIZE = 10
+
 try:
     from settings_local import *
 except:
