@@ -26,3 +26,6 @@ pip-log.txt
 
 settings_local*
 windows
+
+#Vagrant
+dev/.vagrant
