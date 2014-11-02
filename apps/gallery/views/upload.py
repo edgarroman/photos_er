@@ -106,7 +106,7 @@ def _process_uploaded_file(f, album_id):
     try:
         log.info('[%s] Writing corrected photo to path %s' % (logid,orig_path))
         im.save(orig_path, "JPEG", quality=100)
-    except IOError:
+    except IOError as e:
         log.info('[%s] Error saving file %s: %s %s' % (logid, orig_path, e.errno, e))
         return HttpResponseBadRequest('Could not save file')
 
@@ -207,6 +207,7 @@ def photo_upload(request, album_id=None):
             if rc == UPLOAD_FILE_IN_PROGRESS:
                 return HttpResponse("Keep transmitting breaker breaker")
             elif rc == UPLOAD_FILE_DONE:
+                log.info('Finished Upload')
                 return HttpResponse("Finished Upload")
             elif rc == UPLOAD_FILE_FAIL:
                 return HttpResponseBadRequest('Some Error occured')
