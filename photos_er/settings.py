@@ -137,6 +137,9 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+U_LOGFILE_SIZE = 1 * 1024 * 1024
+U_LOGFILE_COUNT = 2
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -167,9 +170,10 @@ LOGGING = {
         },
         'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'mysite.log',
-            #'filemode' : 'w',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'gallery.log',
+            'maxBytes' : U_LOGFILE_SIZE,
+            'backupCount' : U_LOGFILE_COUNT,
             'formatter': 'verbose'
         }
     },
@@ -183,7 +187,7 @@ LOGGING = {
             'handlers':['file','console'],
             'level':'DEBUG',
         },
-        'apps.gallery.views': {
+        'apps.gallery': {
             'handlers': ['file','console'],
             'level': 'DEBUG',
         },
