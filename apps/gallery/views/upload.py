@@ -6,9 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 from apps.gallery.forms import AlbumForm, UploadPhotoForm, AlbumEditForm
 
 import logging
-logfile = settings.TEMP_DIRECTORY + 'applog.log'
-logging.basicConfig(filename=logfile,level=logging.INFO)
-log = logging
+log = logging.getLogger(__name__)
 
 from django.core.files.uploadedfile import UploadedFile
 from django.views.decorators.csrf import csrf_exempt

@@ -15,8 +15,7 @@ from os import unlink, error,path
 from django.core.urlresolvers import reverse
 
 import logging
-logging.basicConfig(filename=settings.TEMP_DIRECTORY + 'applog.log',level=logging.INFO)
-log = logging
+log = logging.getLogger(__name__)
 
 class User(models.Model):
     id = models.IntegerField(primary_key=True,unique=True)

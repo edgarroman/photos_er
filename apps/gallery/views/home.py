@@ -8,10 +8,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 import logging
-logfile = settings.TEMP_DIRECTORY + 'applog.log'
-logging.basicConfig(filename=logfile,level=logging.INFO)
-log = logging
-
+log = logging.getLogger(__name__)
 
 def main_page(request):
 
@@ -71,14 +68,5 @@ def loginerror(request):
 def test(request):
 
     log.info('Test received')
-
-    album = Album.objects.get(id='448')
-    if album:
-        log.info('Found Album: %s' % album.title)
-        #album.reorder_photos()
-    else:
-        log.info('No Album found')
-
-
     return HttpResponse ('Test working!')
 

@@ -9,10 +9,7 @@ from apps.gallery.forms import AlbumForm, UploadPhotoForm, AlbumEditForm
 from django.shortcuts import redirect
 
 import logging
-logfile = settings.TEMP_DIRECTORY + 'applog.log'
-logging.basicConfig(filename=logfile,level=logging.INFO)
-log = logging
-
+log = logging.getLogger(__name__)
 
 # num pages to show up and down
 PAGINATOR_PAGES_TO_SHOW = 3
