@@ -164,12 +164,12 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console':{
-            'level':'DEBUG',
+            'level':'INFO',
             'class':'logging.StreamHandler',
             'formatter': 'simple'
         },
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'gallery.log',
             'maxBytes' : U_LOGFILE_SIZE,
@@ -185,11 +185,11 @@ LOGGING = {
         },
         'django': {
             'handlers':['file','console'],
-            'level':'DEBUG',
+            'level':'INFO',
         },
         'apps.gallery': {
             'handlers': ['file','console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
         },
     }
 }
