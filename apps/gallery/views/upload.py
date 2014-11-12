@@ -27,7 +27,7 @@ from django.core.files import File
 def _process_uploaded_file(f, album_id):
     logid = random.randint(0,1000)
     randnumber = logid # use the random number here too
-    log.info('[%s] received file to _process_uploaded_file view' % logid)
+    log.info('[%s] received file %s to _process_uploaded_file view' % (logid,f))
 
     # Dump out EXIF Tags for debugging purposes
     #im = Image.open(f)
@@ -43,7 +43,7 @@ def _process_uploaded_file(f, album_id):
     # Make full size and thumbsize
     try:
         im = Image.open(f)
-    except IOError:
+    except IOError as e:
         log.info('[%s] Error opening file %s: %s %s' % (logid, f, e.errno, e))
         return HttpResponseBadRequest('Could not read file')
 

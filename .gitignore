@@ -29,5 +29,7 @@ windows
 ve
 tmp
 
+gallery.log
+
 #Vagrant
 dev/.vagrant
