@@ -1,34 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}{{SITE_NAME}}: albums{% endblock %}
-
-{% block menu-highlight-by-year %}class="current"{% endblock %}
+{% block title %}{{brand_title}}: albums{% endblock %}
 
 {% block content %}
-	<div class="clear indent-padding-1"></div>	
 
-	<!--- START SEPARATION BLOCK -->
-	<div class="separation">
-		<div class="container_16 grid16-height">
-			<div class="grid_16 center">
-				<h3 class="gray">Albums by date</h3>
-			</div> <!--- .grid_16 -->	
-		</div> <!--- .container_16 -->
-	</div> <!--- .separation -->
-	<div class="clear"></div>
+    <!-- ==========================
+        BREADCRUMB - START
+    =========================== -->
+    <section class="breadcrumb-wrapper">
+        <div class="container">
+            <h2>Albums by Year</h2>
+        </div>
+    </section>
+    <!-- ==========================
+        BREADCRUMB - END
+    =========================== -->
 
-<div class="container_16">
-      <div class="grid_13 animate">
-         
-         {% for album_year in album_dates %}
+    <section class="content" id="features">
+        <div class="container">
+            {% for album_year in album_dates %}
             <h1>
             <a href="{% url album-list-by-year album_year.year %}">
             Albums from year: {{ album_year.year }}
             </a>
             </h1>
-         {% endfor %}
-         
-      </div> <!--- .grid_11 -->
+            {% endfor %}
+        </div>
+    </section>
 
 {% endblock %}
 

@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- ==========================
+        Meta Tags
+    =========================== -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- ==========================
+        Title
+    =========================== -->
     <title>{% block title %}{{ brand_title }}{% endblock %}</title>
+
+    <!-- ==========================
+        Favicons
+    =========================== -->
+    <link rel="shortcut icon" href="{{ STATIC_URL }}roxie/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="{{ STATIC_URL }}roxie/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}roxie/icons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ STATIC_URL }}roxie/icons/apple-touch-icon-114x114.png">
 
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}influence/lib/bootstrap3/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}influence/lib/FontAwesome/css/font-awesome.min.css">
-    <script src="{{ STATIC_URL }}influence/lib/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}influence/javascripts/site.js" type="text/javascript"></script>
+    <!-- ==========================
+        Fonts
+    =========================== -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}influence/stylesheets/theme.css">
+    <!-- ==========================
+        CSS
+    =========================== -->
+    <link href="{{ STATIC_URL }}roxie/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/animate.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/yamm.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/color-switcher.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/color.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/custom.css" rel="stylesheet" type="text/css">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!-- ==========================
+        JS
+    =========================== -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
     {% if brand_ga_code %}
@@ -44,70 +72,103 @@
 
   </head>
 
-<!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
-<!--[if IE 7 ]> <body class="ie ie7 "> <![endif]-->
-<!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
-<!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
-<body class="">
-<!--<![endif]-->
+<body class="color-blue">
 
-    <div class="navbar">
 
+    <!-- ==========================
+        HEADER - START
+    =========================== -->
+
+    <header class="navbar yamm navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                      <i class="icon-align-justify"></i>
-                  </button>
-                  <a class="navbar-brand" href="{% url home %}">{{ brand_title }}</a>
+                <a class="navbar-brand" href="{% url home %}">{{ brand_title }}</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars"></i></button>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class=" ">
+
+            <div class="navbar-collapse collapse navbar-right">
+                <ul class="nav navbar-nav navbar-main-menu">
+                    <li class="">
                         <a href="{% url home %}"><span>Home</span></a>
                     </li>
                     <li class=" ">
                         <a href="{% url album-list '1' %}"><span>Albums</span></a></li>
                     <li {% block menu-highlight-by-year %}{% endblock %}>
-                        <a href="{% url album-list-by-year-years %}" ><span>Albums by Year</span></a></li>
+                        <a href="{% url album-list-by-year-years %}" ><span>Albums by Year</span></a>
+                    </li>
+                    <li class="dropdown search-form-toggle">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                        <ul class="dropdown-menu navbar-search-form">
+                            <li>
+                                <form>
+                                    <fieldset>
+                                        <div class="form-group nospace">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="search" placeholder="Search" required>
+                                                <span class="input-group-btn"><button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button></span>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
                     {% if user.is_authenticated and user.is_staff %}
                     <li class=" ">
                         <a href="{% url album-new %}"><span>Add New Album</span></a></li>
                     {% endif %}
                 </ul>
-            </div><!--/.navbar-collapse -->
+
+            </div>
         </div>
-    </div>
-
-
+    </header>
 
 
 <!-------------------------------- contents -------------------------->
-<div class="content">
 {% block content %}{% endblock %}
-</div><!-- end #content -->
 
-
-<!-------------------------------- footer -------------------------->
-<div class="footer-spacer"></div>
+    <!-- ==========================
+        FOOTER - START
+    =========================== -->
     <footer>
-        <div class="bottom-footer">
-            <p class="pull-right">
-            {% if user.is_authenticated %}
-                <a href="{% url logout %}">Logout</a>
-            {% else %}
-                <a href="{{ login_url }}">Login</a>
-            {% endif %}
-            </p>
-            <div class="social">
-                Copyright (c) {% now "Y" %} All Rights Reserved
+        <div class="container">
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    Copyright (c) {% now "Y" %} All Rights Reserved
+                </div>
+                <ul class="nav navbar-nav navbar-right hidden-xs hidden-sm">
+                    <li>
+                    {% if user.is_authenticated %}
+                        <a href="{% url logout %}">Logout</a>
+                    {% else %}
+                        <a href="{{ login_url }}">Login</a>
+                    {% endif %}
+                    </li>
+                </ul>
             </div>
         </div>
-        </div>
     </footer>
+    <!-- ==========================
+        FOOTER - END
+    =========================== -->
 
 {% block footer_scripts %}
-    <script src="{{ STATIC_URL }}influence/lib/bootstrap3/dist/js/bootstrap.js"></script>
+    <!-- ==========================
+        JS
+    =========================== -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <!--script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=true"></script-->
+    <script src="{{ STATIC_URL }}roxie/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/waypoints.min.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/owl.carousel.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/isotope.pkgd.min.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/jquery.magnific-popup.min.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/creative-brands.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/color-switcher.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/jquery.countTo.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/jquery.countdown.js"></script>
+    <script src="{{ STATIC_URL }}roxie/js/custom.js"></script>
 
 {% block additional_footer_scripts %}
 {%endblock%}

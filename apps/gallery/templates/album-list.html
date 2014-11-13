@@ -1,26 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %}{{SITE_NAME}}: albums{% endblock %}
-{% block menu-highlight-albums%}class="current"{% endblock %}
-{% block current-album-page %}class="current"{% endblock %}
-
+{% block title %}{{brand_title}}: albums{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-        <h1>Albums</h1>
-            <div id="blog-posts">
-                {% for album in albums %}
-                    {% include "album-list-element.html" %}
-                {% endfor %}
-            </div>
 
-            <div style="margin-top: 0px;">
-                <ul class="fancy pagination">
+    <!-- ==========================
+        BREADCRUMB - START
+    =========================== -->
+    <section class="breadcrumb-wrapper">
+        <div class="container">
+            <h2>Albums</h2>
+        </div>
+    </section>
+    <!-- ==========================
+        BREADCRUMB - END
+    =========================== -->
+
+    <!-- ==========================
+        BLOG - START
+    =========================== -->
+    <section class="content bg-color-2 blog-col-2" id="blog">
+        <div class="container">
+            <div class="blog-header">
+            </div>
+            <div class="row blog-wrapper">
+            {% for album in albums %}
+                {% include "album-list-element.html" %}
+            {% endfor %}
+
+            </div>
+            <!-- Pagination -->
+
+
+            <div class="col-sm-12">
+                <ul class="pagination">
+                    <!-- Left button -->
                     {% if albums.has_previous %}
-                    <li><a href="{% url album-list albums.previous_page_number %}">«</a></li>
+                    <li><a href="{% url album-list albums.previous_page_number %}"><i class="fa fa-chevron-left"></i></a></li>
+                    {% else %}
+                    <li class="disabled"><a href="#"><i class="fa fa-chevron-left"></i></a></li>
                     {% endif %}
+                    <!-- Number buttons -->
                     {% for page in prange %}
                         {% if page = albums.number %}
                         <li class="active"><a href="#">{{page}}</a></li>
@@ -28,14 +48,19 @@
                         <li><a href="{% url album-list page %}">{{page}}</a></li>
                         {% endif %}
                     {% endfor %}
+                    <!-- Right button -->
                     {% if albums.has_next %}
-                    <li><a href="{% url album-list albums.next_page_number %}">»</a></li>
+                    <li><a href="{% url album-list albums.next_page_number %}"><i class="fa fa-chevron-right"></i></a></li>
+                    {% else %}
+                    <li class="disabled"><a href="#"><i class="fa fa-chevron-right"></i></a></li>
                     {% endif %}
                 </ul>
             </div>
-        </div>
-    </div>
-</div>
 
+        </div>
+    </section>
+    <!-- ==========================
+        BLOG - END
+    =========================== -->
 
 {% endblock %}

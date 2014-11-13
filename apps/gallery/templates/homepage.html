@@ -5,31 +5,38 @@
 {% block menu-highlight-home %}class="current"{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-        <h1>Newest Albums</h1>
-            <div id="blog-posts">
+
+    <!-- ==========================
+        BREADCRUMB - START
+    =========================== -->
+    <section class="breadcrumb-wrapper">
+        <div class="container">
+            <h2>Newest Albums</h2>
+        </div>
+    </section>
+    <!-- ==========================
+        BREADCRUMB - END
+    =========================== -->
+
+    <!-- ==========================
+        BLOG - START
+    =========================== -->
+    <section class="content bg-color-2 blog-col-2" id="blog">
+        <div class="container">
+            <div class="blog-header">
+            </div>
+            <div class="row blog-wrapper">
             {% for album in albums %}
                 {% include "album-list-element.html" %}
             {% endfor %}
+
             </div>
-            <button class='btn btn-link'><a href="{% url album-list 2 %}">See more albums</a></button>
+    <button class='btn btn-link'><a href="{% url album-list 2 %}">See more albums</a></button>
         </div>
-        <div class="col-md-3 sidebar well">
-            <form class="form-search">
-              <input type="text" class="input-medium search-query" placeholder="Search..."> <button type="submit" class="btn btn-primary" style="margin-top: -3px;"><i class="icon-search"></i></button></form>
-            <!--h3>Archives</h3>
-            <ul class="icons">
-                <li><a href="#"><i class="icon-angle-right"></i>June 2013</a></li>
-                <li><a href="#"><i class="icon-angle-right"></i>May 2013</a></li>
-                <li><a href="#"><i class="icon-angle-right"></i>April 2013</a></li>
-                <li><a href="#"><i class="icon-angle-right"></i>March 2013</a></li>
-                <li><a href="#"><i class="icon-angle-right"></i>February 2013</a></li>
-                <li><a href="#"><i class="icon-angle-right"></i>January 2013</a></li>
-                <li><a href="#"><i class="icon-angle-right"></i>December 2012</a></li>
-            </ul-->
-        </div>
-    </div>
-</div>
+    </section>
+    <!-- ==========================
+        BLOG - END
+    =========================== -->
+
+
 {% endblock %}

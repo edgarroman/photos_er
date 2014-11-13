@@ -1,21 +1,23 @@
-{% load humanize thumbnail its %}
-        <div class="blog-post row sampleFilterOnetrue sampleFilterTwotrue">
-            <div class="col-md-6">
+{% load humanize thumbnail %}
+        <!-- BLOG POST -->
+        <div class="col-md-6 blog-item wordpress">
+            <div class="blog-post">
                 <a href="{% url album-view album.id %}" class="thumb">
                 {% for photo in album.photo_set.all|dictsort:"order"|slice:":1" %}
                     {% thumbnail photo.filename "720x480" crop="center" as im %}
                         <img src="{{ im.url }}" alt="{{photo.title|escape}}"
-                        class="img-responsive hidden-xs">
+                        class="img-responsive">
                     {% endthumbnail %}
                 {% endfor %}
                 </a>
-            </div>
-            <div class="col-md-6">
-                <div class="post-summary">
-                    <p class="muted date">{{album.date|naturalday}}</p>
-                    <h3><a href="{% url album-view album.id %}">{{album.title}}</a></h3>
+                <div class="blog-post-detail">
+                    <span><i class="fa fa-calendar"></i>{{album.date|naturalday}}</span>
+                    <span><i class="fa fa-file-image-o"></i>{{album.photo_set.count}} photos</span>
+                </div>
+                <div class="blog-post-body">
+                    <a href="{% url album-view album.id %}"><h3>{{album.title}}</h3></a>
                     <p>{{album.description}}</p>
-                    <p><a class="btn btn-sm" href="{% url album-view album.id %}">View Photos</a></p>
+                    <a href="{% url album-view album.id %}" class="btn btn-primary"><i class="fa fa-chevron-right"></i>View Photos</a>
                 </div>
             </div>
         </div>

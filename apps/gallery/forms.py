@@ -9,7 +9,6 @@ class AlbumForm(ModelForm):
         model = Album
         fields = ('title','description','date')
 
-
 class UploadPhotoForm(forms.Form):
     file = forms.FileField()
 
