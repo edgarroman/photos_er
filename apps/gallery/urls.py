@@ -18,6 +18,8 @@ urlpatterns = patterns('apps.gallery.views',
     url(r'^album/(?P<album_id>\d+)/edit/ajax/$', 'album.album_edit_ajax', name='album-edit-ajax'),
     # Create new album
     url(r'^album/new/$', 'album.album_new', name='album-new'),
+    # Delete album
+    url(r'^album/(?P<album_id>\d+)/delete/$', 'album.album_delete', name='album-delete'),
 
     # Upload endpoints
     url(r'^album/(?P<album_id>\d+)/upload/$', 'upload.album_upload', name='album-upload'),

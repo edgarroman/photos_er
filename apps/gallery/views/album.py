@@ -139,6 +139,20 @@ def album_edit(request, album_id=None):
                               context,
                               request_context)
 
+@user_passes_test(lambda u: u.is_staff)
+def album_delete(request, album_id=None):
+
+    if not album_id:
+        return HttpResponseNotFound('No such album')
+
+    album = Album.objects.get(id=album_id)
+    if not album:
+        return HttpResponseNotFound('No such album')
+
+    album.delete()
+    return redirect('home')
+
+
 @csrf_exempt
 @user_passes_test(lambda u: u.is_staff)
 def album_edit_ajax(request, album_id=None):
