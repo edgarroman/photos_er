@@ -6,11 +6,25 @@
 
 {% block additional_header_scripts %}
 
-    <script src="{{ STATIC_URL }}influence/lib/jquery.isotope.min.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}influence/stylesheets/isotope.css">
-
+    <!-- Photo Swipe stuff -->
     <link rel="stylesheet" href="{{ STATIC_URL }}photoswipe-3.0.5/photoswipe.css" />
+{%endblock%}
 
+{% block additional_footer_scripts_first %}
+    <!-- facebook stuff -->
+    <script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}
+    </script>
+
+    <!-- isotope validation that images have loaded -->
+    <script src="{{ STATIC_URL }}imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript">
+        var $container = $('.portfolio-wrapper');
+        $container.imagesLoaded(function() {
+            $container.isotope('layout');
+        });
+    </script>
+
+    <!-- Photo Swipe -->
     <script type="text/javascript" src="{{ STATIC_URL }}photoswipe-3.0.5/lib/klass.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}photoswipe-3.0.5/code.photoswipe-3.0.5.js"></script>
 
@@ -21,89 +35,96 @@
                     options = {
                         'captionAndToolbarAutoHideDelay': 0
                     },
-                    instance = PhotoSwipe.attach( window.document.querySelectorAll('#gallery a.single-image'), options );
+                    instance = PhotoSwipe.attach( window.document.querySelectorAll('.full-image'), options );
             }, false);
         }(window, window.Code.PhotoSwipe));
 
     </script>
 {%endblock%}
 
-{% block additional_footer_scripts %}
-    <!-- facebook stuff -->
-    <script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}
-    </script>
-
-    <script type="text/javascript">
-        $('.social').hide();
-        function onToggle()
-        {
-            if ($('.social').is(":visible")  )
-                $('.social').hide();
-            else
-                $('.social').show();
-            $('#gallery').isotope('reLayout');
-        };
-    </script>
-{%endblock%}
-
 {% block content %}
-<div class="container">
-    <script type="text/javascript">
-    $(function(){
-        $('#gallery').imagesLoaded( function(){
-            $(this).isotope(
-            {
-//                itemSelector : '.photoitem',
-                layoutMode: 'masonry'
-            });
-        });
-        //fancyFilter('.filter', '#gallery');
-    });
-    </script>
-    <h1>{{album.title}}</h1>
-    <h3 class="tagline">{{album.description}}</h3>
-    <div class="widget" style="float:right;padding-bottom:1em;">
-        {% if user.is_authenticated and user.is_staff %}
-        <a class="btn btn-primary" href="{% url album-upload album.id %}">Upload Photos</a>
-        <a class="btn btn-primary" href="{% url album-sort album.id %}">Sort Photos</a>
-        <a class="btn btn-primary" href="{% url album-edit album.id %}">Edit Album</a>
-        {% endif %}
-        <a class="btn btn-primary" onclick="onToggle();" >Controls</a>
-    </div><!-- end .widget -->
-    <br>
 
-    <h4 class="align-right">Album Date: {{album.date|naturalday}}</h4>
+    <!-- ==========================
+        BREADCRUMB - START
+    =========================== -->
+    <section class="breadcrumb-wrapper">
+        <div class="container">
+            <h2>{{album.title}}</h2>
+            <ol class="breadcrumb">
+                {% if user.is_authenticated and user.is_staff %}
+                <a class="btn btn-info btn-sm" href="{% url album-upload album.id %}">Upload Photos</a>
+                <a class="btn btn-info btn-sm" href="{% url album-sort album.id %}">Sort Photos</a>
+                <a class="btn btn-info btn-sm" href="{% url album-edit-info album.id %}">Edit Album Info</a>
+                <a class="btn btn-info btn-sm" href="{% url album-edit album.id %}">Edit Captions</a>
+                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteAlbum"href="#">Delete Album</a>
+                {% endif %}
+            </ol>
+        </div>
+    </section>
+    <!-- ==========================
+        BREADCRUMB - END
+    =========================== -->
 
-
-    <div id="gallery" class="gallery four" style="clear: both;">
-        {% for photo in album.photo_set.all %}
-
-
-            <div class="element col-md-4 pull-left sampleFilterOnefalse sampleFilterTwofalse">
-                {% thumbnail photo.filename "1024x1024" as lg_im %}
-                <a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
-                {% endthumbnail %}
-                <div >
-                {% thumbnail photo.filename "300x300" as im %}
-                <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
-                {% endthumbnail %}
-                </div>
-
-                <h4>{{photo.title|escape}}</h4>
-                <div class="social">
-                    {% if enable_social_media %}
-                    <a rel="nofollow" href="http://www.facebook.com/share.php?u=<;url>" onclick="return fbs_click()" target="_blank" ><i class="icon-facebook"></i></a>
-                    <a href="https://twitter.com/share"
-                    data-url="{% url photo-view photo.id %}"
-                    data-count='none'>
-                    <i class="icon-twitter"></i></a>
-                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-                    {% endif %}
-                    <a href="{% url photo-view photo.id %}"><i class="icon-zoom-in"></i></a>
-                </div>
-            </div>
-        {% endfor %}
-
+    <!-- Delete Album Modal -->
+    <div class="modal fade" id="deleteAlbum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h3>Are you sure you want to delete this album?</h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <a href="{% url album-delete album.id %}" class="btn btn-danger danger">Delete</a>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- ==========================
+        Album - START
+    =========================== -->
+    <section class="content bg-color-2 portfolio-col-3" id="portfolio">
+        <div class="container2">
+            <h4 class="tagline">{{album.description}}</h4>
+            <ul class="brands brands-inline brands-sm brands-transition brands-circle">
+                <li><a rel="nofollow" href="http://www.facebook.com/share.php?u=<;url>" onclick="return fbs_click()" target="_blank" class="brands-facebook"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="https://twitter.com/share"
+                    data-url="{% url album-view album.id %}"
+                    data-count='none' class="brands-twitter">
+                    <i class="fa fa-twitter"></i></a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                </li>
+            </ul>
+            <div class="row portfolio-wrapper">
+            <div class="galleria">
+
+                {% for photo in album.photo_set.all %}
+                <!-- BLOG POST -->
+                <div class="col-md-4 portfolio-item design icons">
+                    <article>
+                        <div class="overlay-wrapper">
+                            {% thumbnail photo.filename "300x300" as im %}
+                            <img src="{{ im.url }}" class="img-responsive" alt="{{ photo.title|escape}}" width=100%>
+                            {% endthumbnail %}
+                                {% thumbnail photo.filename "1024x1024" as lg_im %}
+                                <a href="{{ lg_im.url }}" class="full-image" title="{{ photo.title|escape}}">
+                            <span class="overlay">
+                                View
+                                {% endthumbnail %}
+                            </span></a>
+                        </div>
+                        <div class="portfolio-item-description">
+                            {{photo.title|escape}}
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+
+
+            </div>
+
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

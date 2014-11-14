@@ -38,5 +38,15 @@
         BLOG - END
     =========================== -->
 
+{% endblock %}
 
+{% block additional_footer_scripts_first %}
+    <!-- isotope validation that images have loaded -->
+    <script src="{{ STATIC_URL }}imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript">
+        var $container = $('.blog-wrapper');
+        $container.imagesLoaded(function() {
+            $container.isotope('layout');
+        });
+    </script>
 {% endblock %}

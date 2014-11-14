@@ -13,7 +13,9 @@ urlpatterns = patterns('apps.gallery.views',
     # Sorting
     url(r'^album/(?P<album_id>\d+)/sort/$', 'album.album_sort', name='album-sort'),
     url(r'^album/(?P<album_id>\d+)/sort/ajax$', 'album.album_sort_ajax', name='album-sort-ajax'),
-    # Edit album
+    # Edit album info
+    url(r'^album/(?P<album_id>\d+)/editinfo/$', 'album.album_edit_info', name='album-edit-info'),
+    # Edit album captions
     url(r'^album/(?P<album_id>\d+)/edit/$', 'album.album_edit', name='album-edit'),
     url(r'^album/(?P<album_id>\d+)/edit/ajax/$', 'album.album_edit_ajax', name='album-edit-ajax'),
     # Create new album

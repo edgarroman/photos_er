@@ -38,6 +38,7 @@
     <link href="{{ STATIC_URL }}roxie/css/animate.css" rel="stylesheet" type="text/css">
     <link href="{{ STATIC_URL }}roxie/css/yamm.css" rel="stylesheet" type="text/css">
     <link href="{{ STATIC_URL }}roxie/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css">
+    <link href="{{ STATIC_URL }}roxie/css/creative-brands.css" rel="stylesheet" type="text/css">
     <link href="{{ STATIC_URL }}roxie/css/color-switcher.css" rel="stylesheet" type="text/css">
     <link href="{{ STATIC_URL }}roxie/css/color.css" rel="stylesheet" type="text/css">
     <link href="{{ STATIC_URL }}roxie/css/custom.css" rel="stylesheet" type="text/css">
@@ -158,6 +159,10 @@
     =========================== -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+
+    {% block additional_footer_scripts_first %}
+    {%endblock%}
+
     <!--script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=true"></script-->
     <script src="{{ STATIC_URL }}roxie/js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}roxie/js/waypoints.min.js"></script>

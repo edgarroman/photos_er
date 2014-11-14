@@ -200,3 +200,23 @@ def album_new(request):
     return render_to_response('album-new.html',
                               context,
                               request_context)
+
+@user_passes_test(lambda u: u.is_staff)
+def album_edit_info(request, album_id):
+
+    album = get_object_or_404(Album, id=album_id)
+
+    if request.method == 'POST':
+        form = AlbumForm(request.POST,instance=album)
+        if form.is_valid():
+            form.save()
+            return redirect(album.get_url())
+    else:
+        form = AlbumForm(instance=album)
+
+    context = Context()
+    context['form'] = form
+    request_context = RequestContext(request)
+    return render_to_response('album-new.html',
+                              context,
+                              request_context)
