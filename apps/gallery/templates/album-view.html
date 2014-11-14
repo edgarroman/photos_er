@@ -106,16 +106,23 @@
                             {% thumbnail photo.filename "300x300" as im %}
                             <img src="{{ im.url }}" class="img-responsive" alt="{{ photo.title|escape}}" width=100%>
                             {% endthumbnail %}
-                                {% thumbnail photo.filename "1024x1024" as lg_im %}
-                                <a href="{{ lg_im.url }}" class="full-image" title="{{ photo.title|escape}}">
+
+                            {% thumbnail photo.filename "1024x1024" as lg_im %}
+                            <a href="{{ lg_im.url }}" class="full-image" title="{{ photo.title|escape}}">
+                            {% endthumbnail %}
+
                             <span class="overlay">
-                                View
-                                {% endthumbnail %}
-                            </span></a>
+                            </span>
+                            </a>
                         </div>
+                        {% if photo.title %}
                         <div class="portfolio-item-description">
                             {{photo.title|escape}}
                         </div>
+                        {% endif %}
+                        <a href="{% url photo-view photo.id %}">
+                        <i class="fa fa-edit pull-right"></i>
+                        </a>
                     </article>
                 </div>
                 {% endfor %}

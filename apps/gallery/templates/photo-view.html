@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 
-{% block title %}{{album.title}}{% endblock %}
+{% block title %}{{album.title}}{%if photo.title %}: {{photo.title}}{%endif%}
+{% endblock %}
 
 
 {% block additional_header_scripts %}
 <link rel="image_src"
     type="image/jpeg"
-    {% thumbnail photo.filename "300x190" as im %}
+    {% thumbnail photo.filename "300x300" as im %}
     href="{{ im.url }}" />
     {% endthumbnail %}
 {% endblock %}
@@ -33,43 +34,59 @@
 {%endblock%}
 
 {% block content %}
-<div class="container">
+    <!-- ==========================
+        BREADCRUMB - START
+    =========================== -->
+    <section class="breadcrumb-wrapper">
+        <div class="container">
+            <h2 class='click' id="title|{{photo.id}}">{{photo.title}}</h2>
 
-    <h2 id="title|{{photo.id}}">{{photo.title}}
-    </h2>
+            <ol class="breadcrumb">
+                <li><a href="{% url home %}">Home</a></li>
+                <li><a href="{% url album-view album.id %}">{{album.title}}</li>
+                {% if user.is_authenticated and user.is_staff %}
+                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePhoto"href="#">Delete Photo</a>
+                {% endif %}
+            </ol>
+        </div>
+    </section>
+    <!-- ==========================
+        BREADCRUMB - END
+    =========================== -->
 
-    <ul class="portfolio-pagination">
-      {% if photo.prev_photo %}
-        <li class="prev"><a href="{% url photo-view photo.prev_photo.id %}" class="button medium no-bg"><span class="arrow left">&raquo;</span> Previous</a></li>
-      {% endif %}
-      {% if photo.next_photo %}
-        <li class="next"><a href="{% url photo-view photo.next_photo.id %}" class="button medium no-bg">Next <span class="arrow">&raquo;</span></a></li>
-          <script language="javascript">
-            <!-- cache the next image
-            ImageNext= new Image();
+    <!-- Delete Photo Modal -->
+    <div class="modal fade" id="deletePhoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h3>Are you sure you want to delete this photo?</h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <a href="#" class="btn btn-danger danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================
+        Photo - START
+    =========================== -->
+    <section class="content bg-color-2" id="blog">
+        <div class="container">
+            <div class="row">
+
+                <!-- BLOG CONTENT - START -->
+                <div class="col-md-12 blog-content">
+
             {% thumbnail photo.filename "1024x1024" as lg_im %}
-                ImageNext.src = "{{ lg_im.url }}"
+            <img src="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
             {% endthumbnail %}
-              //end hiding -->
-          </script>
-      {% endif %}
-    </ul><!-- end .portfolio-pagination -->
-
-    {% thumbnail photo.filename "1024x1024" as lg_im %}
-    <img src="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
-    {% endthumbnail %}
-<p>
-    <a href="{% url album-view photo.album.id %}" class="button no-bg large">
-        Back to the Album<img src="{{STATIC_URL}}smartstart/img/icon-grid.png" alt="" class="icon">
-    </a>
-
-
-    <ul class="social-links">
-        {% if enable_social_media %}
-        <!--li class="twitter"><a href="#">Twitter</a></li-->
-        <li class="facebook"><a rel="nofollow" href="http://www.facebook.com/share.php?u=<;url>" onclick="return fbs_click()" target="_blank" >Facebook</a></li>
-        <!--li class="googleplus"><a href="#">Google Plus</a></li-->
-        {% endif %}
-    </ul><!-- end .social-links -->
-</div>
+            <p>
+            <a href="{% url album-view photo.album.id %}">
+                Back to the Album
+            </a>
+            </div>
+        </div>
+    </section>
 {% endblock %}
