@@ -126,8 +126,6 @@ INSTALLED_APPS = (
     'social_auth',
     # allows nice formatting
     'django.contrib.humanize',
-    # schema migration
-    'south',
     # thumbnail generation
     'sorl.thumbnail',
 )

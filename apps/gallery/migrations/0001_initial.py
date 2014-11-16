@@ -1,129 +1,85 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'User'
-        db.create_table(u'tblUsers', (
-            ('id', self.gf('django.db.models.fields.IntegerField')(unique=True, primary_key=True)),
-            ('username', self.gf('django.db.models.fields.CharField')(max_length=192, db_column='UserName')),
-            ('password', self.gf('django.db.models.fields.CharField')(max_length=192, db_column='Password')),
-            ('email', self.gf('django.db.models.fields.CharField')(max_length=384, db_column='Email', blank=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=384, db_column='Name', blank=True)),
-            ('lastlogindate', self.gf('django.db.models.fields.DateTimeField')(db_column='LastLoginDate')),
-            ('hash', self.gf('django.db.models.fields.CharField')(max_length=384, db_column='Hash', blank=True)),
-            ('authlevel', self.gf('django.db.models.fields.IntegerField')(db_column='AuthLevel')),
-        ))
-        db.send_create_signal('gallery', ['User'])
+    dependencies = [
+    ]
 
-        # Adding model 'Album'
-        db.create_table(u'tblAlbums', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['gallery.Album'], null=True, db_column='ParentAlbumId', blank=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='AlbumName')),
-            ('description', self.gf('django.db.models.fields.TextField')(db_column='AlbumDescription', blank=True)),
-            ('keywords', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='Keywords', blank=True)),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 6, 24, 0, 0), db_column='AlbumDate')),
-            ('datecreated', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 6, 24, 0, 0), db_column='DateCreated')),
-            ('datelastmodified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 6, 24, 0, 0), db_column='DateLastModified')),
-            ('published', self.gf('django.db.models.fields.IntegerField')(default=1, db_column='Published')),
-            ('passwordprotected', self.gf('django.db.models.fields.IntegerField')(default=0, db_column='PasswordProtected')),
-        ))
-        db.send_create_signal('gallery', ['Album'])
-
-        # Adding model 'Photo'
-        db.create_table(u'tblPhotos', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('filename', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True)),
-            ('photodate', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='PhotoDate', blank=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='Title', blank=True)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='Description', blank=True)),
-            ('location', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='Location', blank=True)),
-            ('keywords', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='Keywords', blank=True)),
-            ('datecreated', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 6, 24, 0, 0), db_column='DateCreated')),
-            ('datelastmodified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 6, 24, 0, 0), db_column='DateLastModified')),
-            ('album', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['gallery.Album'], db_column='Album')),
-            ('order', self.gf('django.db.models.fields.IntegerField')(db_column='PhotoOrder')),
-        ))
-        db.send_create_signal('gallery', ['Photo'])
-
-        # Adding model 'Notification'
-        db.create_table(u'tblNotification', (
-            ('idx', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.TextField')(db_column='Name')),
-            ('email', self.gf('django.db.models.fields.TextField')(db_column='Email')),
-            ('lastupdate', self.gf('django.db.models.fields.DateTimeField')(db_column='LastUpdate')),
-            ('active', self.gf('django.db.models.fields.IntegerField')(db_column='Active')),
-        ))
-        db.send_create_signal('gallery', ['Notification'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'User'
-        db.delete_table(u'tblUsers')
-
-        # Deleting model 'Album'
-        db.delete_table(u'tblAlbums')
-
-        # Deleting model 'Photo'
-        db.delete_table(u'tblPhotos')
-
-        # Deleting model 'Notification'
-        db.delete_table(u'tblNotification')
-
-
-    models = {
-        'gallery.album': {
-            'Meta': {'object_name': 'Album', 'db_table': "u'tblAlbums'"},
-            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 6, 24, 0, 0)', 'db_column': "'AlbumDate'"}),
-            'datecreated': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 6, 24, 0, 0)', 'db_column': "'DateCreated'"}),
-            'datelastmodified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 6, 24, 0, 0)', 'db_column': "'DateLastModified'"}),
-            'description': ('django.db.models.fields.TextField', [], {'db_column': "'AlbumDescription'", 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'keywords': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'Keywords'", 'blank': 'True'}),
-            'parent': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['gallery.Album']", 'null': 'True', 'db_column': "'ParentAlbumId'", 'blank': 'True'}),
-            'passwordprotected': ('django.db.models.fields.IntegerField', [], {'default': '0', 'db_column': "'PasswordProtected'"}),
-            'published': ('django.db.models.fields.IntegerField', [], {'default': '1', 'db_column': "'Published'"}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'AlbumName'"})
-        },
-        'gallery.notification': {
-            'Meta': {'object_name': 'Notification', 'db_table': "u'tblNotification'"},
-            'active': ('django.db.models.fields.IntegerField', [], {'db_column': "'Active'"}),
-            'email': ('django.db.models.fields.TextField', [], {'db_column': "'Email'"}),
-            'idx': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
-            'lastupdate': ('django.db.models.fields.DateTimeField', [], {'db_column': "'LastUpdate'"}),
-            'name': ('django.db.models.fields.TextField', [], {'db_column': "'Name'"})
-        },
-        'gallery.photo': {
-            'Meta': {'ordering': "['order', 'photodate']", 'object_name': 'Photo', 'db_table': "u'tblPhotos'"},
-            'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['gallery.Album']", 'db_column': "'Album'"}),
-            'datecreated': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 6, 24, 0, 0)', 'db_column': "'DateCreated'"}),
-            'datelastmodified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 6, 24, 0, 0)', 'db_column': "'DateLastModified'"}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'Description'", 'blank': 'True'}),
-            'filename': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'keywords': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'Keywords'", 'blank': 'True'}),
-            'location': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'Location'", 'blank': 'True'}),
-            'order': ('django.db.models.fields.IntegerField', [], {'db_column': "'PhotoOrder'"}),
-            'photodate': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'PhotoDate'", 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'Title'", 'blank': 'True'})
-        },
-        'gallery.user': {
-            'Meta': {'object_name': 'User', 'db_table': "u'tblUsers'"},
-            'authlevel': ('django.db.models.fields.IntegerField', [], {'db_column': "'AuthLevel'"}),
-            'email': ('django.db.models.fields.CharField', [], {'max_length': '384', 'db_column': "'Email'", 'blank': 'True'}),
-            'hash': ('django.db.models.fields.CharField', [], {'max_length': '384', 'db_column': "'Hash'", 'blank': 'True'}),
-            'id': ('django.db.models.fields.IntegerField', [], {'unique': 'True', 'primary_key': 'True'}),
-            'lastlogindate': ('django.db.models.fields.DateTimeField', [], {'db_column': "'LastLoginDate'"}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '384', 'db_column': "'Name'", 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '192', 'db_column': "'Password'"}),
-            'username': ('django.db.models.fields.CharField', [], {'max_length': '192', 'db_column': "'UserName'"})
-        }
-    }
-
-    complete_apps = ['gallery']
+    operations = [
+        migrations.CreateModel(
+            name='Album',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(max_length=765, db_column=b'AlbumName')),
+                ('description', models.TextField(db_column=b'AlbumDescription', blank=True)),
+                ('keywords', models.CharField(max_length=765, db_column=b'Keywords', blank=True)),
+                ('date', models.DateTimeField(default=datetime.datetime.now, db_column=b'AlbumDate')),
+                ('datecreated', models.DateTimeField(auto_now=True, auto_now_add=True, db_column=b'DateCreated')),
+                ('datelastmodified', models.DateTimeField(auto_now=True, auto_now_add=True, db_column=b'DateLastModified')),
+                ('published', models.IntegerField(default=1, db_column=b'Published')),
+                ('passwordprotected', models.IntegerField(default=0, db_column=b'PasswordProtected')),
+                ('parent', models.ForeignKey(db_column=b'ParentAlbumId', blank=True, to='gallery.Album', null=True)),
+            ],
+            options={
+                'db_table': 'tblAlbums',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Notification',
+            fields=[
+                ('idx', models.IntegerField(serialize=False, primary_key=True)),
+                ('name', models.TextField(db_column=b'Name')),
+                ('email', models.TextField(db_column=b'Email')),
+                ('lastupdate', models.DateTimeField(db_column=b'LastUpdate')),
+                ('active', models.IntegerField(db_column=b'Active')),
+            ],
+            options={
+                'db_table': 'tblNotification',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Photo',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('filename', models.ImageField(null=True, upload_to=b'images/')),
+                ('photodate', models.CharField(max_length=765, db_column=b'PhotoDate', blank=True)),
+                ('title', models.CharField(max_length=765, db_column=b'Title', blank=True)),
+                ('description', models.CharField(max_length=765, db_column=b'Description', blank=True)),
+                ('location', models.CharField(max_length=765, db_column=b'Location', blank=True)),
+                ('keywords', models.CharField(max_length=765, db_column=b'Keywords', blank=True)),
+                ('datecreated', models.DateTimeField(default=datetime.datetime(2014, 11, 15, 19, 23, 28, 369073), db_column=b'DateCreated')),
+                ('datelastmodified', models.DateTimeField(default=datetime.datetime(2014, 11, 15, 19, 23, 28, 369099), db_column=b'DateLastModified')),
+                ('order', models.IntegerField(db_column=b'PhotoOrder')),
+                ('album', models.ForeignKey(to='gallery.Album', db_column=b'Album')),
+            ],
+            options={
+                'ordering': ['order', 'photodate'],
+                'db_table': 'tblPhotos',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='User',
+            fields=[
+                ('id', models.IntegerField(unique=True, serialize=False, primary_key=True)),
+                ('username', models.CharField(max_length=192, db_column=b'UserName')),
+                ('password', models.CharField(max_length=192, db_column=b'Password')),
+                ('email', models.CharField(max_length=384, db_column=b'Email', blank=True)),
+                ('name', models.CharField(max_length=384, db_column=b'Name', blank=True)),
+                ('lastlogindate', models.DateTimeField(db_column=b'LastLoginDate')),
+                ('hash', models.CharField(max_length=384, db_column=b'Hash', blank=True)),
+                ('authlevel', models.IntegerField(db_column=b'AuthLevel')),
+            ],
+            options={
+                'db_table': 'tblUsers',
+            },
+            bases=(models.Model,),
+        ),
+    ]
