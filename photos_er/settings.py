@@ -53,7 +53,7 @@ MEDIA_ROOT = ''
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/photos'
+MEDIA_URL = '/photos/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -81,7 +81,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
+SECRET_KEY = 'override'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -123,7 +123,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'apps.gallery',
-    'social_auth',
+    #'social_auth',
+    'social.apps.django_app.default',
     # allows nice formatting
     'django.contrib.humanize',
     # thumbnail generation
@@ -207,40 +208,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     'apps.gallery.context_processors.branding_variables',
     'apps.gallery.context_processors.user_vars',
-    'social_auth.context_processors.social_auth_by_type_backends',
-
+#    'social.apps.django_app.context_processors.backends',
+#    'social.apps.django_app.context_processors.login_redirect',
 )
 
 AUTHENTICATION_BACKENDS = (
-#    'social_auth.backends.twitter.TwitterBackend',
-#    'social_auth.backends.facebook.FacebookBackend',
-#    'social_auth.backends.google.GoogleOAuthBackend',
-#    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.google.GoogleBackend',
-#    'social_auth.backends.yahoo.YahooBackend',
-#    'social_auth.backends.contrib.linkedin.LinkedinBackend',
-#    'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-#    'social_auth.backends.contrib.orkut.OrkutBackend',
-#    'social_auth.backends.contrib.foursquare.FoursquareBackend',
-#    'social_auth.backends.contrib.github.GithubBackend',
-#    'social_auth.backends.contrib.dropbox.DropboxBackend',
-#    'social_auth.backends.contrib.flickr.FlickrBackend',
-    'social_auth.backends.OpenIDBackend',
+#    'social.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# turns on twitter/facebook/google buttons
-ENABLE_SOCIAL_MEDIA = True
-
-SOCIAL_AUTH_ENABLED_BACKENDS = ('google',)
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/login-error/'
-
-SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
-SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
-SOCIAL_AUTH_ERROR_KEY = 'social_errors'
 
 BRAND_SITE_TITLE='photos.edgarroman.com'
 BRAND_LOGO='logo.png'
@@ -252,7 +233,9 @@ TEMP_DIRECTORY = ''
 
 ALBUM_PAGE_SIZE = 10
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 try:
-    from settings_local import *
+    from photos_er.settings_local import *
 except:
     pass

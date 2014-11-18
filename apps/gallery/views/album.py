@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from apps.gallery.models import *
-from django.template import Context, RequestContext
+from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -37,38 +37,35 @@ def album_list(request, page_id='1'):
     print('prange = %s' % prange)
     print('num_pages = %s' % paginator.num_pages)
 
-    context = Context()
+    context = dict()
     context['albums'] = albums
     context['prange'] = prange
     context['last_page'] = paginator.num_pages
-    request_context = RequestContext(request)
     return render_to_response('album-list.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 def album_list_by_year(request, year=None):
 
     albums = Album.objects.order_by('date').filter(published='1',date__year=year)
 
-    context = Context()
+    context = dict()
     context['albums'] = albums
     context['next_page_id'] = None
     context['prev_page_id'] = None
-    request_context = RequestContext(request)
     return render_to_response('album-list.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 def album_list_by_year_years(request):
 
-    album_dates = Album.objects.dates('date','year',order='DESC')
+    album_dates = Album.objects.datetimes('date','year',order='DESC')
 
-    context = Context()
+    context = dict()
     context['album_dates'] = album_dates
-    request_context = RequestContext(request)
     return render_to_response('album-list-by-year.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 def album_view(request, album_id=None):
 
@@ -78,13 +75,12 @@ def album_view(request, album_id=None):
     album = Album.objects.get(id=album_id)
     photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
 
-    context = Context()
+    context = dict()
     context['photos'] = photos
     context['album'] = album
-    request_context = RequestContext(request)
     return render_to_response('album-view.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -96,13 +92,12 @@ def album_sort(request, album_id=None):
     album = Album.objects.get(id=album_id)
     photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
 
-    context = Context()
+    context = dict()
     context['photos'] = photos
     context['album'] = album
-    request_context = RequestContext(request)
     return render_to_response('album-sort.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 @csrf_exempt
 @user_passes_test(lambda u: u.is_staff)
@@ -131,13 +126,12 @@ def album_edit(request, album_id=None):
     album = Album.objects.get(id=album_id)
     photos = Photo.objects.order_by('order','photodate').filter(album=album_id)
 
-    context = Context()
+    context = dict()
     context['photos'] = photos
     context['album'] = album
-    request_context = RequestContext(request)
     return render_to_response('album-edit.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 @user_passes_test(lambda u: u.is_staff)
 def album_delete(request, album_id=None):
@@ -194,12 +188,11 @@ def album_new(request):
     else:
         form = AlbumForm()
 
-    context = Context()
+    context = dict()
     context['form'] = form
-    request_context = RequestContext(request)
     return render_to_response('album-new.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 @user_passes_test(lambda u: u.is_staff)
 def album_edit_info(request, album_id):
@@ -214,9 +207,8 @@ def album_edit_info(request, album_id):
     else:
         form = AlbumForm(instance=album)
 
-    context = Context()
+    context = dict()
     context['form'] = form
-    request_context = RequestContext(request)
     return render_to_response('album-new.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))

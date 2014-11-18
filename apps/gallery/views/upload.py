@@ -10,7 +10,6 @@ log = logging.getLogger(__name__)
 
 from django.core.files.uploadedfile import UploadedFile
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import simplejson
 import random
 from shutil import copyfile
 #from PIL import Image, ExifTags
@@ -215,7 +214,7 @@ def photo_upload(request, album_id=None):
     else:
         form = UploadPhotoForm()
 
-    context = Context()
+    context = dict()
     context['form'] = form
     context['album_id'] = album_id
     request_context = RequestContext(request)
@@ -230,7 +229,7 @@ def album_upload(request,album_id):
     if not album:
         return HttpResponseNotFound('No such album')
 
-    context = Context()
+    context = dict()
     context['album'] = album
     request_context = RequestContext(request)
     return render_to_response('album-upload.html',

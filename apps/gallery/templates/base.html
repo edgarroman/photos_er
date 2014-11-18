@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,10 +16,10 @@
     <!-- ==========================
         Favicons
     =========================== -->
-    <link rel="shortcut icon" href="{{ STATIC_URL }}roxie/icons/favicon.ico">
-    <link rel="apple-touch-icon" href="{{ STATIC_URL }}roxie/icons/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}roxie/icons/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ STATIC_URL }}roxie/icons/apple-touch-icon-114x114.png">
+    <link rel="shortcut icon" href="{% static "roxie/icons/favicon.ico" %}">
+    <link rel="apple-touch-icon" href="{% static "roxie/icons/apple-touch-icon.png" %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static "roxie/icons/apple-touch-icon-72x72.png" %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static "roxie/icons/apple-touch-icon-114x114.png" %}">
 
     <meta name="description" content="">
     <meta name="author" content="">
@@ -32,16 +33,16 @@
     <!-- ==========================
         CSS
     =========================== -->
-    <link href="{{ STATIC_URL }}roxie/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css">
     <link href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}roxie/css/animate.css" rel="stylesheet" type="text/css">
-    <link href="{{ STATIC_URL }}roxie/css/yamm.css" rel="stylesheet" type="text/css">
-    <link href="{{ STATIC_URL }}roxie/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css">
-    <link href="{{ STATIC_URL }}roxie/css/creative-brands.css" rel="stylesheet" type="text/css">
-    <link href="{{ STATIC_URL }}roxie/css/color-switcher.css" rel="stylesheet" type="text/css">
-    <link href="{{ STATIC_URL }}roxie/css/color.css" rel="stylesheet" type="text/css">
-    <link href="{{ STATIC_URL }}roxie/css/custom.css" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/animate.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/yamm.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/jquery.bootstrap-touchspin.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/creative-brands.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/color-switcher.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/color.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "roxie/css/custom.css" %}" rel="stylesheet" type="text/css">
 
     <!-- ==========================
         JS
@@ -83,19 +84,19 @@
     <header class="navbar yamm navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url home %}">{{ brand_title }}</a>
+                <a class="navbar-brand" href="{% url 'home' %}">{{ brand_title }}</a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars"></i></button>
             </div>
 
             <div class="navbar-collapse collapse navbar-right">
                 <ul class="nav navbar-nav navbar-main-menu">
                     <li class="">
-                        <a href="{% url home %}"><span>Home</span></a>
+                        <a href="{% url 'home' %}"><span>Home</span></a>
                     </li>
                     <li class=" ">
-                        <a href="{% url album-list '1' %}"><span>Albums</span></a></li>
+                        <a href="{% url 'album-list' '1' %}"><span>Albums</span></a></li>
                     <li {% block menu-highlight-by-year %}{% endblock %}>
-                        <a href="{% url album-list-by-year-years %}" ><span>Albums by Year</span></a>
+                        <a href="{% url 'album-list-by-year-years' %}" ><span>Albums by Year</span></a>
                     </li>
                     <li class="dropdown search-form-toggle">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
@@ -116,7 +117,7 @@
                     </li>
                     {% if user.is_authenticated and user.is_staff %}
                     <li class=" ">
-                        <a href="{% url album-new %}"><span>Add New Album</span></a></li>
+                        <a href="{% url 'album-new' %}"><span>Add New Album</span></a></li>
                     {% endif %}
                 </ul>
 
@@ -140,7 +141,7 @@
                 <ul class="nav navbar-nav navbar-right hidden-xs hidden-sm">
                     <li>
                     {% if user.is_authenticated %}
-                        <a href="{% url logout %}">Logout</a>
+                        <a href="{% url 'logout' %}">Logout</a>
                     {% else %}
                         <a href="{{ login_url }}">Login</a>
                     {% endif %}
@@ -164,16 +165,16 @@
     {%endblock%}
 
     <!--script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=true"></script-->
-    <script src="{{ STATIC_URL }}roxie/js/bootstrap.min.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/waypoints.min.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/owl.carousel.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/isotope.pkgd.min.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/jquery.magnific-popup.min.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/creative-brands.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/color-switcher.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/jquery.countTo.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/jquery.countdown.js"></script>
-    <script src="{{ STATIC_URL }}roxie/js/custom.js"></script>
+    <script src="{% static "roxie/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "roxie/js/waypoints.min.js" %}"></script>
+    <script src="{% static "roxie/js/owl.carousel.js" %}"></script>
+    <script src="{% static "roxie/js/isotope.pkgd.min.js" %}"></script>
+    <script src="{% static "roxie/js/jquery.magnific-popup.min.js" %}"></script>
+    <script src="{% static "roxie/js/creative-brands.js" %}"></script>
+    <script src="{% static "roxie/js/color-switcher.js" %}"></script>
+    <script src="{% static "roxie/js/jquery.countTo.js" %}"></script>
+    <script src="{% static "roxie/js/jquery.countdown.js" %}"></script>
+    <script src="{% static "roxie/js/custom.js" %}"></script>
 
 {% block additional_footer_scripts %}
 {%endblock%}

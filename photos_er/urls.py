@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     # url(r'^photos_er/', include('photos_er.foo.urls')),
     url(r'^', include('apps.gallery.urls')),
 
-    url(r'', include('social_auth.urls')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

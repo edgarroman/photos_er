@@ -20,7 +20,7 @@
         <div class="container">
             {% for album_year in album_dates %}
             <h1>
-            <a href="{% url album-list-by-year album_year.year %}">
+            <a href="{% url 'album-list-by-year' album_year.year %}">
             Albums from year: {{ album_year.year }}
             </a>
             </h1>

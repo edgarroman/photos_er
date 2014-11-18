@@ -13,7 +13,6 @@ def branding_variables(request):
 def user_vars(request):
     user_vars = {
         'login_url' : settings.LOGIN_URL,
-        'enable_social_media' : settings.ENABLE_SOCIAL_MEDIA
 
     }
     return user_vars

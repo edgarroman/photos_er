@@ -13,7 +13,7 @@
             update: function(event,ui) {
                 var serial = $("#sortgallery").sortable('serialize');
                 $.ajax({
-                    url: "{% url album-sort-ajax album.id %}",
+                    url: "{% url 'album-sort-ajax' album.id %}",
                     type: "post",
                     data: serial,
                     error: function()
@@ -35,10 +35,10 @@
 {% block content %}
 <div class="container">
         <h1>
-            <a href="{% url album-view album.id %}">{{album.title}}</a> - Sort Photos</h1>
+            <a href="{% url 'album-view' album.id %}">{{album.title}}</a> - Sort Photos</h1>
     </header><!-- end .page-header -->
 
-    <a class="button" href="{% url album-view album.id %}">Done Sorting Photos</a>
+    <a class="button" href="{% url 'album-view' album.id %}">Done Sorting Photos</a>
 
     <h4>Drag and drop images into correct order.  Changes are saved immediately</h4>
 

@@ -14,12 +14,11 @@ def main_page(request):
 
     albums = Album.objects.order_by('-date').filter(published='1')[:settings.ALBUM_PAGE_SIZE]
 
-    context = Context()
+    context = dict()
     context['albums'] = albums
-    request_context = RequestContext(request)
     return render_to_response('homepage.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 
 def photo_view(request, photo_id=None):
@@ -30,22 +29,20 @@ def photo_view(request, photo_id=None):
     photo = Photo.objects.get(id=photo_id)
     album = photo.album
 
-    context = Context()
+    context = dict()
     context['photo'] = photo
     context['album'] = album
-    request_context = RequestContext(request)
     return render_to_response('photo-view.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 
 
 def login(request):
-    context = Context()
-    request_context = RequestContext(request)
+    context = dict()
     return render_to_response('login.html',
                               context,
-                              request_context)
+                              context_instance=RequestContext(request))
 
 from django.contrib.auth import logout as auth_logout
 
@@ -54,7 +51,6 @@ def logout(request):
     # Redirect to homepage.
     return redirect('/')
 
-from social_auth import __version__ as version
 from django.contrib.messages.api import get_messages
 
 def loginerror(request):
@@ -62,7 +58,7 @@ def loginerror(request):
     messages = get_messages(request)
     return render_to_response('loginerror.html', {'version': version,
                                              'messages': messages},
-                              RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def test(request):

@@ -1,8 +1,9 @@
 Django==1.7.1
-django-social-auth==0.7.28
 httplib2==0.9
 oauth2==1.5.211
 pil==1.1.7
 python-dateutil==2.2
 python-openid==2.2.5
 sorl-thumbnail==12.1c
+python-social-auth==0.2.1
+pytz==2014.9

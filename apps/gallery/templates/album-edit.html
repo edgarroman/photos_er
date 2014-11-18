@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% load thumbnail %}
+{% load thumbnail staticfiles %}
 
 {% block title %}{{album.title}}{% endblock %}
 
 {% block additional_footer_scripts %}
     <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}jquery.jeditable.js"></script>
+    <script src="{% static "jquery.jeditable.js" %}"></script>
     <script>
 
-    $(".click").editable("{% url album-edit-ajax album.id %}", {
+    $(".click").editable("{% url 'album-edit-ajax' album.id %}", {
         indicator : "Saving...",
         tooltip   : "Click to edit...",
         style  : "inherit",
@@ -25,9 +25,9 @@
 <div class="container">
 
     <h1>
-            <a href="{% url album-view album.id %}">{{album.title}}</a> - Edit Album</h1>
+            <a href="{% url 'album-view' album.id %}">{{album.title}}</a> - Edit Album</h1>
 
-    <a class="button" href="{% url album-view album.id %}">Done Editing Album</a>
+    <a class="button" href="{% url 'album-view' album.id %}">Done Editing Album</a>
 
     <h4>Click on a title or description below to change it.  Changes are saved immediately</h4>
 
