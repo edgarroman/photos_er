@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from apps.gallery.models import *
-from django.template import Context, RequestContext
+from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from apps.gallery.forms import AlbumForm, UploadPhotoForm, AlbumEditForm

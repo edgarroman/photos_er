@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadReque
 from apps.gallery.models import *
 from django.template import Context, RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import redirect
 
 from django.db.models import Count
 from django.conf import settings
@@ -49,7 +50,7 @@ from django.contrib.auth import logout as auth_logout
 def logout(request):
     auth_logout(request)
     # Redirect to homepage.
-    return redirect('/')
+    return redirect('home')
 
 from django.contrib.messages.api import get_messages
 

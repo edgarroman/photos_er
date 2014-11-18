@@ -208,12 +208,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     'apps.gallery.context_processors.branding_variables',
     'apps.gallery.context_processors.user_vars',
-#    'social.apps.django_app.context_processors.backends',
-#    'social.apps.django_app.context_processors.login_redirect',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 AUTHENTICATION_BACKENDS = (
-#    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
