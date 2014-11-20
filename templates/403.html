@@ -1,0 +1,19 @@
+{% extends "error_base.html" %}
+{%block content%}
+    <!-- ==========================
+        ERROR - START
+    =========================== -->
+    <section class="content-full bg-color-2">
+        <div class="container error">
+            <div class="error-number">403</div>
+            <div class="error-text">
+                <h1>ACCESS FORBIDDEN</h1>
+                <p>You don't have permission to access this page. Go back to
+                <a href="{% url "home" %}">Homepage</a></p>
+            </div>
+        </div>
+    </section>
+    <!-- ==========================
+        ERROR - END
+    =========================== -->
+{%endblock%}

@@ -1,0 +1,19 @@
+{% extends "error_base.html" %}
+{%block content%}
+    <!-- ==========================
+        ERROR - START
+    =========================== -->
+    <section class="content-full bg-color-2">
+        <div class="container error">
+            <div class="error-number">404</div>
+            <div class="error-text">
+                <h1>PAGE NOT FOUND</h1>
+                <p>Something went wrong. We couldn't find this page. Go back to
+                <a href="{% url "home" %}">Homepage</a></p>
+            </div>
+        </div>
+    </section>
+    <!-- ==========================
+        ERROR - END
+    =========================== -->
+{%endblock%}
