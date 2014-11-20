@@ -8,7 +8,7 @@
 {% block additional_header_scripts %}
 <link rel="image_src"
     type="image/jpeg"
-    {% thumbnail photo.filename "300x300" as im %}
+    {% thumbnail photo.filename "600x600" as im %}
     href="{{ im.url }}" />
     {% endthumbnail %}
 {% endblock %}

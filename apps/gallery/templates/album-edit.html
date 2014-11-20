@@ -35,7 +35,7 @@
         {% for photo in album.photo_set.all %}
             <div id="photo_{{photo.id}}" class="one-third {% cycle '' '' 'last' %}">
             <li class="single-image">
-                {% thumbnail photo.filename "300x300" as im %}
+                {% thumbnail photo.filename "600x600" as im %}
                 <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
                 {% endthumbnail %}
                 <h5 class="title click button no-bg" id="title|{{photo.id}}">{{photo.title|escape}}</h5>

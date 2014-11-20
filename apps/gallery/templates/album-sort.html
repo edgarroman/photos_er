@@ -46,10 +46,10 @@
         {% for photo in album.photo_set.all %}
             <div id="photo_{{photo.id}}" class="one-third {% cycle '' '' 'last' %}">
             <li>
-                {% thumbnail photo.filename "1024x1024" as lg_im %}
+                {% thumbnail photo.filename "2048x2048" as lg_im %}
                 <a href="{{ lg_im.url }}" class="single-image" title="{{ photo.title|escape}}">
                 {% endthumbnail %}
-                    {% thumbnail photo.filename "300x300" as im %}
+                    {% thumbnail photo.filename "600x600" as im %}
                     <img src="{{ im.url }}" alt="{{photo.title|escape}}" >
                     {% endthumbnail %}
                 </a>

@@ -103,11 +103,11 @@
                 <div class="col-md-4 portfolio-item design icons">
                     <article>
                         <div class="overlay-wrapper">
-                            {% thumbnail photo.filename "300x300" as im %}
+                            {% thumbnail photo.filename "600x600" as im %}
                             <img src="{{ im.url }}" class="img-responsive" alt="{{ photo.title|escape}}" width=100%>
                             {% endthumbnail %}
 
-                            {% thumbnail photo.filename "1024x1024" as lg_im %}
+                            {% thumbnail photo.filename "2048x2048" as lg_im %}
                             <a href="{{ lg_im.url }}" class="full-image" title="{{ photo.title|escape}}">
                             {% endthumbnail %}
 
