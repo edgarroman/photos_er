@@ -112,13 +112,19 @@ WSGI_APPLICATION = 'photos_er.wsgi.application'
 
 import os
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__)) + '/../'
-print ('SITE_ROOT = %s' % SITE_ROOT)
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(SITE_ROOT, 'templates'),
 )
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(SITE_ROOT, 'tmp/whoosh_index'),
+    },
+}
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -138,6 +144,9 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     # thumbnail generation
     'sorl.thumbnail',
+    # Search
+    'whoosh',
+    'haystack',
 )
 
 # A sample logging configuration. The only tangible logging
