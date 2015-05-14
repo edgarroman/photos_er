@@ -11,6 +11,9 @@
 {%endblock%}
 
 {% block additional_footer_scripts_first %}
+    <!-- Lazy Load -->
+    <script type="text/javascript" src="{% static "jquery_lazyload-1.9.5/jquery.lazyload.min.js" %}"></script>
+
     <!-- facebook stuff -->
     <script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}
     </script>
@@ -18,8 +21,13 @@
     <!-- isotope validation that images have loaded -->
     <script src="{% static "imagesloaded.pkgd.min.js" %}"></script>
     <script type="text/javascript">
-        var $container = $('.portfolio-wrapper');
-        $container.imagesLoaded(function() {
+        $("img.img-responsive").lazyload({
+            failure_limit: 10
+        });
+
+        $('img.img-responsive').on('appear',function(){
+            console.log(this); //fires this function when it appears
+            var $container = $('.portfolio-wrapper');
             $container.isotope('layout');
         });
     </script>
@@ -40,6 +48,7 @@
         }(window, window.Code.PhotoSwipe));
 
     </script>
+
 {%endblock%}
 
 {% block content %}
@@ -109,7 +118,7 @@
                             {% endthumbnail %}
 
                             {% thumbnail photo.filename "600x600" as im %}
-                            <img src="{{ im.url }}" class="img-responsive" alt="{{ photo.title|escape}}" width=100%>
+                            <img data-original="{{ im.url }}" class="img-responsive" alt="{{ photo.title|escape}}" width=100% height=600px>
                             {% endthumbnail %}
 
                             <span class="overlay">
