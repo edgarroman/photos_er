@@ -25,11 +25,17 @@
             failure_limit: 10
         });
 
+        var $container = $('.portfolio-wrapper');
+
         $('img.img-responsive').on('appear',function(){
             console.log(this); //fires this function when it appears
-            var $container = $('.portfolio-wrapper');
             $container.isotope('layout');
         });
+
+        $container.imagesLoaded(function() {
+            $container.isotope('layout');
+        });
+
     </script>
 
     <!-- Photo Swipe -->
