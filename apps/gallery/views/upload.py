@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from apps.gallery.forms import AlbumForm, UploadPhotoForm, AlbumEditForm
+from django.utils.timezone import utc,is_naive,make_aware
 
 import logging
 log = logging.getLogger(__name__)
@@ -59,6 +60,9 @@ def _process_uploaded_file(f, album_id):
                     log.info('[%s] Found tag: %s, value: %s' % (logid,decoded,value))
                 elif decoded == 'DateTime':
                     date_taken =  datetime.strptime(value, "%Y:%m:%d %H:%M:%S")
+                    if is_naive(date_taken):
+                        # if no timezone specified, assume UTC
+                        date_taken = make_aware(date_taken,utc)
                     log.info('[%s] Found tag: %s, value: %s, date_taken=%s' % (logid,decoded,value,date_taken))
 
     # We rotate regarding to the EXIF orientation information

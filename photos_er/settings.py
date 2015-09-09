@@ -208,6 +208,10 @@ LOGGING = {
             'handlers': ['file','console'],
             'level': 'INFO',
         },
+        'sorl.thumbnail': {
+            'handlers': ['file','console'],
+            'level': 'INFO',
+        },
     }
 }
 
